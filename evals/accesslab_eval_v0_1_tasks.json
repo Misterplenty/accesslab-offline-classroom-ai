@@ -1,0 +1,240 @@
+{
+  "version": "AccessLab Eval v0.1",
+  "documents": [
+    "sample_data/worksheet_question3.md",
+    "sample_data/python_loops_notes.txt",
+    "sample_data/python_loops_notes.pdf",
+    "sample_data/spanish_python_loops.md",
+    "sample_data/french_algebra_note.md",
+    "sample_data/swahili_classroom_instructions.md"
+  ],
+  "tasks": [
+    {
+      "id": "doc-01",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "Explain question 3 in simple language.",
+      "expected_keywords": ["one item at a time", "stack"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "doc-02",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "What does `for item in numbers:` mean?",
+      "expected_keywords": ["list", "one item at a time"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "doc-03",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "What does `print()` do?",
+      "expected_keywords": ["shows", "screen"],
+      "expected_sources": ["worksheet_question3.md"],
+      "citation_required": true,
+      "max_total_words": 90
+    },
+    {
+      "id": "doc-04",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "What happens to `item` when numbers = [3, 5, 8]?",
+      "expected_keywords": ["3", "5", "8"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "doc-05",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "According to the notes, what is a for loop useful for?",
+      "expected_keywords": ["visit each value", "group"],
+      "expected_sources": ["python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "doc-06",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "Use one short quote from the worksheet to explain question 3.",
+      "expected_keywords": ["one item at a time"],
+      "expected_sources": ["worksheet_question3.md"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "doc-07",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "Which uploaded file contains the teacher note about checking each card in a stack one by one?",
+      "expected_keywords": ["worksheet_question3.md"],
+      "expected_sources": ["worksheet_question3.md"],
+      "citation_required": true,
+      "max_total_words": 100
+    },
+    {
+      "id": "doc-08",
+      "category": "worksheet/local-doc",
+      "task_type": "qa",
+      "prompt": "Explain question 9 in simple language.",
+      "expected_keywords": ["not fully sure", "closest matching local snippets"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "expect_unsure": true,
+      "max_total_words": 100
+    },
+    {
+      "id": "code-01",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Explain what is wrong in simple language. Suggest the smallest fix. Patch the code and rerun the tests.",
+      "code_path": "sample_code/buggy_sum.py",
+      "test_path": "sample_code/test_buggy_sum.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-02",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Explain the bug simply, patch only what is needed, and rerun the tests.",
+      "code_path": "evals/code_tasks/double_number_bug.py",
+      "test_path": "evals/code_tasks/test_double_number_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-03",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Diagnose the failing test first, then make the smallest fix and rerun the tests.",
+      "code_path": "evals/code_tasks/first_item_bug.py",
+      "test_path": "evals/code_tasks/test_first_item_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-04",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Use simple language, make a minimal change, and rerun the tests.",
+      "code_path": "evals/code_tasks/is_even_bug.py",
+      "test_path": "evals/code_tasks/test_is_even_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-05",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Explain why the test fails, patch the code, and rerun the tests.",
+      "code_path": "evals/code_tasks/count_letters_bug.py",
+      "test_path": "evals/code_tasks/test_count_letters_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-06",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Keep the patch minimal and explain it for a beginner.",
+      "code_path": "evals/code_tasks/total_scores_bug.py",
+      "test_path": "evals/code_tasks/test_total_scores_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-07",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Use the runtime or test evidence, make one small fix, and rerun the tests.",
+      "code_path": "evals/code_tasks/square_number_bug.py",
+      "test_path": "evals/code_tasks/test_square_number_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "code-08",
+      "category": "beginner-python-bug-fix",
+      "task_type": "code",
+      "instruction": "Explain the mistake simply, patch the code, and rerun the tests.",
+      "code_path": "evals/code_tasks/average_bug.py",
+      "test_path": "evals/code_tasks/test_average_bug.py",
+      "max_total_words": 180
+    },
+    {
+      "id": "a11y-01",
+      "category": "accessibility/output-format",
+      "task_type": "qa",
+      "prompt": "Explain question 3 in screen-reader-friendly output with short paragraphs.",
+      "expected_keywords": ["one item at a time", "stack"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "require_short_paragraphs": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "a11y-02",
+      "category": "accessibility/output-format",
+      "task_type": "qa",
+      "prompt": "Explain what `item` means in `for item in numbers:`. Keep every paragraph under 2 sentences.",
+      "expected_keywords": ["next value", "list"],
+      "expected_sources": ["worksheet_question3.md", "python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "require_short_paragraphs": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "a11y-03",
+      "category": "accessibility/output-format",
+      "task_type": "qa",
+      "prompt": "Give the short answer first. Then add more detail in short paragraphs. What does `print()` do?",
+      "expected_keywords": ["shows", "screen"],
+      "expected_sources": ["worksheet_question3.md"],
+      "citation_required": true,
+      "require_short_paragraphs": true,
+      "max_total_words": 90
+    },
+    {
+      "id": "a11y-04",
+      "category": "accessibility/output-format",
+      "task_type": "qa",
+      "prompt": "Use simple language for a screen reader. What is a for loop useful for?",
+      "expected_keywords": ["visit each value", "group"],
+      "expected_sources": ["python_loops_notes.txt", "python_loops_notes.pdf"],
+      "citation_required": true,
+      "require_short_paragraphs": true,
+      "max_total_words": 110
+    },
+    {
+      "id": "multi-01",
+      "category": "multilingual/digital-equity",
+      "task_type": "qa",
+      "prompt": "En espanol, que hace un bucle `for` con la lista numeros?",
+      "expected_keywords": ["uno por uno", "lista"],
+      "expected_sources": ["spanish_python_loops.md"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "multi-02",
+      "category": "multilingual/digital-equity",
+      "task_type": "qa",
+      "prompt": "En francais simple, comment resoudre x + 3 = 8?",
+      "expected_keywords": ["soustraire 3", "x = 5"],
+      "expected_sources": ["french_algebra_note.md"],
+      "citation_required": true,
+      "max_total_words": 120
+    },
+    {
+      "id": "multi-03",
+      "category": "multilingual/digital-equity",
+      "task_type": "qa",
+      "prompt": "According to the Swahili instructions, what should a learner do if evidence is missing?",
+      "expected_keywords": ["unsure", "classroom materials"],
+      "expected_sources": ["swahili_classroom_instructions.md"],
+      "citation_required": true,
+      "max_total_words": 120
+    }
+  ]
+}

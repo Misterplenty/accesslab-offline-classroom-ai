@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-05-18T19:32:28.041202+00:00",
+  "data_dir": "<workspace>/data/judge-demo",
+  "base_url": "http://127.0.0.1:8000",
+  "class_space": "judge-demo-class",
+  "documents": [
+    {
+      "file_name": "worksheet_question3.md",
+      "chunks_created": 1,
+      "created": true
+    },
+    {
+      "file_name": "python_loops_notes.txt",
+      "chunks_created": 1,
+      "created": true
+    },
+    {
+      "file_name": "spanish_python_loops.md",
+      "chunks_created": 1,
+      "created": true
+    },
+    {
+      "file_name": "french_algebra_note.md",
+      "chunks_created": 1,
+      "created": true
+    },
+    {
+      "file_name": "swahili_classroom_instructions.md",
+      "chunks_created": 1,
+      "created": true
+    }
+  ],
+  "qa_id": 1,
+  "weak_qa_id": 2,
+  "code_id": 1,
+  "qa_url": "/qa?qa_id=1",
+  "weak_qa_url": "/qa?qa_id=2",
+  "code_url": "/code?session_id=1",
+  "source_url": "/sources/worksheet_question3-p0-c1-013585d640?qa_id=1",
+  "teacher_url": "/",
+  "proofs_url": "/proofs"
+}

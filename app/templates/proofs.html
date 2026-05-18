@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}Proof Dashboard — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {% call ui.page_header(
+    "Proofs",
+    None
+  ) %}
+  {% endcall %}
+{% endblock %}
+
+{% block content %}
+  <div class="page-layout page-layout--single page-layout--admin">
+    {% call ui.section_block(
+      "Evaluation Scorecard",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <div class="proof-grid">
+        {% for card in proof_scorecard_rows %}
+          <div class="proof-card proof-card--{{ card.tone }}">
+            <span class="proof-card__status">{{ card.status }}</span>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.body }}</p>
+            {% if card.path %}
+              <p class="proof-card__meta"><code>{{ card.path }}</code></p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Accessibility proof",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <div class="proof-grid">
+        {% for card in accessibility_proof_rows %}
+          <div class="proof-card proof-card--{{ card.tone }}">
+            <span class="proof-card__status">{{ card.status }}</span>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.body }}</p>
+            {% if card.path %}
+              <p class="proof-card__meta"><code>{{ card.path }}</code></p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Local/offline proof",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {{ ui.status_row("Primary tracks", "Future of Education + Ollama", "Grounded local classroom help with visible local runtime proof.") }}
+        {{ ui.status_row("Source scope", "local classroom only", class_space_display) }}
+        {{ ui.status_row("Internet retrieval", "not used", "Answers come from indexed local materials.") }}
+        {{ ui.status_row("Cloud API key", "not required", "The configured runtime is local Ollama unless explicitly changed.") }}
+        {{ ui.status_row("Generation model", active_model, generation_model_policy, mono=True) }}
+        {{ ui.status_row("Retrieval", retrieval_diagnostics.actual_mode_label, retrieval_status.summary) }}
+      </dl>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Ollama runtime proof",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {% for row in ollama_proof_rows %}
+          {{ ui.status_row(row.label, row.value, row.summary, mono=True if row.label in ["Ollama URL", "Active model"] else False) }}
+        {% endfor %}
+      </dl>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Artifact index",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <ul class="clean-list sample-list">
+        {% for row in artifact_snapshot_rows %}
+          <li><strong>{{ row.title }}:</strong> <span class="status-pill status-pill--{{ row.tone }}">{{ row.status }}</span> · <code>{{ row.path }}</code> · {{ row.detail }}</li>
+        {% endfor %}
+      </ul>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Preflight checks",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {{ ui.status_row("Overall", operator_preflight.overall_label, tone='success' if operator_preflight.overall_status == 'ready' else 'warn' if operator_preflight.overall_status == 'attention' else 'error') }}
+        {% for check in operator_preflight.checks %}
+          {{ ui.status_row(check.label, check.summary, check.detail, tone='success' if check.status == 'pass' else 'warn' if check.status == 'warn' else 'default' if check.status == 'info' else 'error') }}
+        {% endfor %}
+      </dl>
+    {% endcall %}
+  </div>
+{% endblock %}

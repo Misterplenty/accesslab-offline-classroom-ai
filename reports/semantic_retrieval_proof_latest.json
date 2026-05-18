@@ -1,0 +1,151 @@
+{
+  "generated_at": "2026-05-18T19:14:07.983699+00:00",
+  "runtime_backend": "ollama",
+  "deployment_mode": "single-user-local",
+  "deployment_mode_display": "Single-user local",
+  "model": "gemma4:e4b",
+  "model_tier": "E4B",
+  "retrieval_backend": "sqlite-fts5 + local semantic index",
+  "semantic_model": "embeddinggemma",
+  "semantic_backend": "ollama:embeddinggemma",
+  "semantic_status_code": "ok",
+  "semantic_status_label": "Ready",
+  "semantic_summary": "EmbeddingGemma is ready and the shared embedding index is usable.",
+  "semantic_detail": "Ready with `embeddinggemma`.",
+  "semantic_provider_ready": true,
+  "semantic_retrieval_ready": true,
+  "semantic_index_status": "indexed",
+  "semantic_index_label": "Indexed",
+  "semantic_counts": {
+    "documents": 2,
+    "chunks": 2,
+    "embedded_chunks": 2,
+    "missing_chunks": 0
+  },
+  "data_dir": "data/retrieval-smoke",
+  "db_path": "data/retrieval-smoke/accesslab.db",
+  "files": [
+    "retrieval_smoke_distractor.md",
+    "retrieval_smoke_relevant.md"
+  ],
+  "chunks_created": 2,
+  "question": "How do I combine the numbers?",
+  "expected_substring": "add the values together to get the final total",
+  "modes": {
+    "lexical": {
+      "requested_mode": "lexical",
+      "effective_mode": "lexical",
+      "effective_mode_label": "Lexical only",
+      "top_chunk_id": "retrieval_smoke_distractor-p0-c1-e5826125ae",
+      "top_source_file": "retrieval_smoke_distractor.md",
+      "top_match_source": "lexical",
+      "top_semantic_similarity": null,
+      "top_contains_expected": false,
+      "any_result_contains_expected": true,
+      "result_count": 2,
+      "results": [
+        {
+          "chunk_id": "retrieval_smoke_distractor-p0-c1-e5826125ae",
+          "source_file": "retrieval_smoke_distractor.md",
+          "page_number": null,
+          "snippet": "[The] worksheet lists [the] [numbers] beside question 3 so students can copy them.",
+          "score": -2.351135383730957e-06,
+          "match_source": "lexical",
+          "semantic_similarity": null,
+          "chunk_text": "The worksheet lists the numbers beside question 3 so students can copy them."
+        },
+        {
+          "chunk_id": "retrieval_smoke_relevant-p0-c1-e3bfdd5c71",
+          "source_file": "retrieval_smoke_relevant.md",
+          "page_number": null,
+          "snippet": "Add [the] values together to get [the] final total for [the] answer.",
+          "score": -1.5816993464052288e-06,
+          "match_source": "lexical",
+          "semantic_similarity": null,
+          "chunk_text": "Add the values together to get the final total for the answer."
+        }
+      ]
+    },
+    "semantic": {
+      "requested_mode": "semantic",
+      "effective_mode": "semantic",
+      "effective_mode_label": "Semantic only",
+      "top_chunk_id": "retrieval_smoke_relevant-p0-c1-e3bfdd5c71",
+      "top_source_file": "retrieval_smoke_relevant.md",
+      "top_match_source": "semantic",
+      "top_semantic_similarity": 0.4059944526865503,
+      "top_contains_expected": true,
+      "any_result_contains_expected": true,
+      "result_count": 2,
+      "results": [
+        {
+          "chunk_id": "retrieval_smoke_relevant-p0-c1-e3bfdd5c71",
+          "source_file": "retrieval_smoke_relevant.md",
+          "page_number": null,
+          "snippet": "Add the values together to get the final total for the answer.",
+          "score": 0.4059944526865503,
+          "match_source": "semantic",
+          "semantic_similarity": 0.4059944526865503,
+          "chunk_text": "Add the values together to get the final total for the answer."
+        },
+        {
+          "chunk_id": "retrieval_smoke_distractor-p0-c1-e5826125ae",
+          "source_file": "retrieval_smoke_distractor.md",
+          "page_number": null,
+          "snippet": "The worksheet lists the numbers beside question 3 so students can copy them.",
+          "score": 0.22256377274068162,
+          "match_source": "semantic",
+          "semantic_similarity": 0.22256377274068162,
+          "chunk_text": "The worksheet lists the numbers beside question 3 so students can copy them."
+        }
+      ]
+    },
+    "hybrid": {
+      "requested_mode": "hybrid",
+      "effective_mode": "hybrid",
+      "effective_mode_label": "Hybrid",
+      "top_chunk_id": "retrieval_smoke_relevant-p0-c1-e3bfdd5c71",
+      "top_source_file": "retrieval_smoke_relevant.md",
+      "top_match_source": "hybrid",
+      "top_semantic_similarity": 0.4059944526865503,
+      "top_contains_expected": true,
+      "any_result_contains_expected": true,
+      "result_count": 2,
+      "results": [
+        {
+          "chunk_id": "retrieval_smoke_relevant-p0-c1-e3bfdd5c71",
+          "source_file": "retrieval_smoke_relevant.md",
+          "page_number": null,
+          "snippet": "Add [the] values together to get [the] final total for [the] answer.",
+          "score": 0.03252247488101534,
+          "match_source": "hybrid",
+          "semantic_similarity": 0.4059944526865503,
+          "chunk_text": "Add the values together to get the final total for the answer."
+        },
+        {
+          "chunk_id": "retrieval_smoke_distractor-p0-c1-e5826125ae",
+          "source_file": "retrieval_smoke_distractor.md",
+          "page_number": null,
+          "snippet": "[The] worksheet lists [the] [numbers] beside question 3 so students can copy them.",
+          "score": 0.03252247488101534,
+          "match_source": "hybrid",
+          "semantic_similarity": 0.22256377274068162,
+          "chunk_text": "The worksheet lists the numbers beside question 3 so students can copy them."
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "hybrid_improved_expected_support_over_lexical": true,
+    "semantic_changed_chunks_vs_lexical": true,
+    "hybrid_changed_chunks_vs_lexical": true,
+    "semantic_neutral_or_failed": false
+  },
+  "overall_result": "pass",
+  "honest_limits": [
+    "This proof measures retrieval ranking over a small local fixture, not answer quality by itself.",
+    "Hybrid may be neutral when lexical already retrieves the strongest evidence.",
+    "Semantic-only is useful as a diagnostic, not the default product path.",
+    "If EmbeddingGemma is unavailable, AccessLab must report lexical fallback instead of claiming hybrid retrieval."
+  ]
+}

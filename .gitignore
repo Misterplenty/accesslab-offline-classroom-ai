@@ -1,0 +1,52 @@
+# Local environment
+.env
+.venv/
+venv/
+env/
+
+# Python/runtime caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local app state
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated proof/eval scratch output
+reports/runs/
+reports/ui_polish_screenshots/
+reports/judge/*/
+!reports/judge/latest/
+!reports/judge/latest/**
+media/*
+!media/README.md
+proofs/generated/
+
+# Local logs and raw media captures
+logs/
+*.log
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+
+# OS/editor noise
+.DS_Store
+*.swp
+*.swo
+
+# Large local binaries that should never be committed
+*.iso
+*.img
+*.dmg
+*.qcow2
+*.vhd
+*.vhdx

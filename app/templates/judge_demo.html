@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}Guided judge demo — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {% call ui.page_header(
+    "Judge demo",
+    None
+  ) %}
+  {% endcall %}
+{% endblock %}
+
+{% block content %}
+  <div class="page-layout page-layout--single page-layout--demo">
+    {% call ui.section_block(
+      "Demo path",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <div class="demo-path" aria-label="Judge demo path">
+        <a href="{{ judge_demo.qa_url }}" class="demo-step-card">
+          <div>
+            <h3>Ask a grounded classroom question</h3>
+            <p>Learner question with citations.</p>
+          </div>
+          <span>→</span>
+        </a>
+        <a href="{{ judge_demo.source_url }}" class="demo-step-card">
+          <div>
+            <h3>Inspect the cited source</h3>
+            <p>Open the cited local material.</p>
+          </div>
+          <span>→</span>
+        </a>
+        <a href="{{ judge_demo.code_url }}" class="demo-step-card">
+          <div>
+            <h3>Fix beginner Python</h3>
+            <p>Failure, minimal patch, rerun pass.</p>
+          </div>
+          <span>→</span>
+        </a>
+        <a href="{{ judge_demo.teacher_url }}" class="demo-step-card">
+          <div>
+            <h3>Review teacher summary</h3>
+            <p>Class questions, weak matches, repairs.</p>
+          </div>
+          <span>→</span>
+        </a>
+        <a href="{{ judge_demo.proofs_url }}" class="demo-step-card">
+          <div>
+            <h3>Verify local/offline proof</h3>
+            <p>Offline, Ollama, benchmark, and preflight status.</p>
+          </div>
+          <span>→</span>
+        </a>
+      </div>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Seeded flow",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {{ ui.status_row("Teacher upload", "ready", "Sample classroom materials are indexed locally.", tone="success") }}
+        {{ ui.status_row("Learner question", "ready", "A saved answer opens with citations and trust details.", tone="success") }}
+        {{ ui.status_row("Source view", "ready", "The citation opens the local source chunk.", tone="success") }}
+        {{ ui.status_row("Code tutor", "ready", "The saved Python session shows failing evidence, patch, and passing rerun.", tone="success") }}
+        {{ ui.status_row("Teacher activity", "ready", "The home view in Teacher/Admin mode shows the class summary.", tone="success") }}
+        {{ ui.status_row("Proof dashboard", "open", "The read-only dashboard shows ready, missing, stale, and attention states from local artifacts.", tone="default") }}
+      </dl>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Local materials",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <ul class="row-list material-list">
+        {% for doc in judge_demo.documents %}
+          <li class="material-row">
+            <div class="material-row__main">
+              <p class="material-row__name">{{ doc.file_name }}</p>
+              <p class="material-row__meta">{{ "seeded now" if doc.created else "already present" }}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endcall %}
+  </div>
+{% endblock %}

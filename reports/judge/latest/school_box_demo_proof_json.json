@@ -1,0 +1,308 @@
+{
+  "generated_at": "2026-05-18T19:15:25.559904+00:00",
+  "overall_status": "pass",
+  "runtime_backend": "ollama",
+  "deployment_mode": "school-box-shared",
+  "deployment_mode_display": "School AI box",
+  "class_space": "judge-demo-class",
+  "model": "gemma4:e4b",
+  "model_tier": "E4B",
+  "semantic_model": "embeddinggemma",
+  "retrieval_requested_mode": "hybrid",
+  "retrieval_effective_mode": "hybrid",
+  "retrieval_effective_mode_label": "Hybrid",
+  "semantic_status_code": "ok",
+  "semantic_retrieval_ready": true,
+  "ocr_available": true,
+  "queue": {
+    "max_concurrent_jobs": 1,
+    "active_jobs": 0,
+    "waiting_jobs": 0,
+    "queue_depth": 0,
+    "active_budget": 0,
+    "available_budget": 1,
+    "last_started_at": "2026-05-18T19:15:17+00:00",
+    "last_completed_at": "2026-05-18T19:15:25+00:00",
+    "last_failed_at": "",
+    "last_job_kind": "code-tutor",
+    "last_wait_seconds": 0.0,
+    "average_wait_seconds": 0.0,
+    "completed_jobs": 4,
+    "failed_jobs": 0,
+    "active_by_kind": {},
+    "waiting_by_kind": {},
+    "recent_jobs": [
+      {
+        "ticket_id": 4,
+        "job_kind": "code-tutor",
+        "weight": 1,
+        "enqueued_at": "2026-05-18T19:15:17+00:00",
+        "started_at": "2026-05-18T19:15:17+00:00",
+        "finished_at": "2026-05-18T19:15:25+00:00",
+        "outcome": "complete",
+        "wait_seconds": 0.0,
+        "run_seconds": 7.895
+      },
+      {
+        "ticket_id": 3,
+        "job_kind": "grounded-qa",
+        "weight": 1,
+        "enqueued_at": "2026-05-18T19:15:02+00:00",
+        "started_at": "2026-05-18T19:15:02+00:00",
+        "finished_at": "2026-05-18T19:15:17+00:00",
+        "outcome": "complete",
+        "wait_seconds": 0.0,
+        "run_seconds": 14.828
+      },
+      {
+        "ticket_id": 2,
+        "job_kind": "upload-index",
+        "weight": 1,
+        "enqueued_at": "2026-05-18T19:15:02+00:00",
+        "started_at": "2026-05-18T19:15:02+00:00",
+        "finished_at": "2026-05-18T19:15:02+00:00",
+        "outcome": "complete",
+        "wait_seconds": 0.0,
+        "run_seconds": 0.068
+      },
+      {
+        "ticket_id": 1,
+        "job_kind": "upload-index",
+        "weight": 1,
+        "enqueued_at": "2026-05-18T19:15:02+00:00",
+        "started_at": "2026-05-18T19:15:02+00:00",
+        "finished_at": "2026-05-18T19:15:02+00:00",
+        "outcome": "complete",
+        "wait_seconds": 0.0,
+        "run_seconds": 0.134
+      }
+    ],
+    "active_job_receipts": []
+  },
+  "data_dir": "data/school-box-demo",
+  "db_path": "data/school-box-demo/accesslab.db",
+  "scenario": {
+    "teacher_uploads_materials": [
+      {
+        "file_name": "worksheet_question3.md",
+        "file_type": "md",
+        "chunks_created": 1,
+        "ocr_status": "not_applicable"
+      },
+      {
+        "file_name": "python_loops_notes.txt",
+        "file_type": "txt",
+        "chunks_created": 1,
+        "ocr_status": "not_applicable"
+      }
+    ],
+    "learner_grounded_question": {
+      "question": "What does `for item in numbers:` mean?",
+      "history_id": 1,
+      "saved_url": "/qa?qa_id=1",
+      "result_mode": "answered",
+      "short_answer": "It means the program goes through the list one item at a time [S1], [S2].",
+      "citation_count": 2,
+      "citations": [
+        {
+          "label": "S1",
+          "source_file": "worksheet_question3.md",
+          "page_number": null,
+          "chunk_id": "worksheet_question3-p0-c1-013585d640",
+          "snippet": "# Worksheet: Python Loops Question 1: What does a variable do? A variable stores a value so the program can use it later. Question 2: What does `print()` do? `print()` shows text or numbers on the screen. Question 3: What does `for item in numbers:` mean? Short answer: It means the program goes through the list one..."
+        },
+        {
+          "label": "S2",
+          "source_file": "python_loops_notes.txt",
+          "page_number": null,
+          "chunk_id": "python_loops_notes-p0-c1-5940939291",
+          "snippet": "Beginner Python notes A loop repeats a step. A for loop is useful when you want to visit each value in a group. Example: for score in scores: print(score) What this means: - scores is the whole list - score is one value from the list - the loop runs once for each value - print(score) shows one score at a time Anothe..."
+        }
+      ],
+      "profile": {
+        "ttft_seconds": 12.870562750002136,
+        "total_seconds": 14.82372795799165,
+        "retrieval_seconds": 0.06942645899835043,
+        "model_inference_seconds": 14.74894358299207,
+        "prompt_eval_count": 662,
+        "eval_count": 772,
+        "queue_wait_seconds": 0.0,
+        "retrieval_mode": "hybrid",
+        "retrieval_mode_label": "Hybrid"
+      }
+    },
+    "learner_python_repair": {
+      "session_id": 1,
+      "saved_url": "/code?session_id=1",
+      "passed_tests": true,
+      "diagnosis": "The function incorrectly subtracts the two numbers, causing the assertion `assert -1 == 5` to fail when called with (2, 3).",
+      "evidence": "The function incorrectly subtracts the two numbers, causing the assertion `assert -1 == 5` to fail when called with (2, 3).",
+      "next_fix": "Change the subtraction operator to an addition operator.",
+      "profile": {
+        "ttft_seconds": 5.74577649999992,
+        "total_seconds": 7.894058208010392,
+        "retrieval_seconds": 0.0,
+        "model_inference_seconds": 7.5781212500005495,
+        "prompt_eval_count": 393,
+        "eval_count": 393,
+        "queue_wait_seconds": 0.0,
+        "retrieval_mode": "lexical",
+        "retrieval_mode_label": "Lexical only"
+      }
+    },
+    "teacher_admin_review": {
+      "qa_entry_found": true,
+      "code_entry_found": true,
+      "labels": {
+        "qa": [
+          {
+            "id": 1,
+            "source_type": "qa",
+            "source_id": 1,
+            "label": "good",
+            "note": "Canonical school-box demo review label.",
+            "actor_role": "teacher",
+            "actor_key": "demo-teacher",
+            "class_space": "judge-demo-class",
+            "created_at": "2026-05-18T19:15:25+00:00"
+          }
+        ],
+        "code": [
+          {
+            "id": 2,
+            "source_type": "code",
+            "source_id": 1,
+            "label": "good",
+            "note": "Canonical school-box demo review label.",
+            "actor_role": "teacher",
+            "actor_key": "demo-teacher",
+            "class_space": "judge-demo-class",
+            "created_at": "2026-05-18T19:15:25+00:00"
+          }
+        ]
+      },
+      "recent_activity": [
+        {
+          "activity_type": "code",
+          "id": 1,
+          "actor_role": "learner",
+          "actor_key": "demo-learner",
+          "title": "Fix the smallest beginner bug and rerun the tests.",
+          "state_label": "saved review",
+          "detail_label": "Local rerun",
+          "created_at": "2026-05-18T19:15:25+00:00",
+          "href": "/code?session_id=1"
+        },
+        {
+          "activity_type": "qa",
+          "id": 1,
+          "actor_role": "learner",
+          "actor_key": "demo-learner",
+          "title": "What does `for item in numbers:` mean?",
+          "state_label": "answered",
+          "detail_label": "Hybrid",
+          "created_at": "2026-05-18T19:15:17+00:00",
+          "href": "/qa?qa_id=1"
+        }
+      ],
+      "preflight_overall": "ready",
+      "preflight_checks": [
+        {
+          "id": "generation-runtime",
+          "label": "Gemma 4 runtime",
+          "status": "pass",
+          "summary": "Ready with `gemma4:e4b`.",
+          "detail": "Ollama local runtime (gemma4:e4b)",
+          "critical": true
+        },
+        {
+          "id": "embedding-model",
+          "label": "EmbeddingGemma model",
+          "status": "pass",
+          "summary": "EmbeddingGemma is ready and the shared embedding index is usable.",
+          "detail": "Ready with `embeddinggemma`.",
+          "critical": false
+        },
+        {
+          "id": "semantic-retrieval",
+          "label": "Semantic retrieval",
+          "status": "pass",
+          "summary": "Hybrid active.",
+          "detail": "Ready with `embeddinggemma`.",
+          "critical": false
+        },
+        {
+          "id": "ocr",
+          "label": "OCR fallback",
+          "status": "pass",
+          "summary": "OCR extras are available locally.",
+          "detail": "rapidocr (ready, dpi=200)",
+          "critical": false
+        },
+        {
+          "id": "storage",
+          "label": "Writable local storage",
+          "status": "pass",
+          "summary": "Storage is writable in <workspace>/data/school-box-demo.",
+          "detail": "<workspace>/data/school-box-demo/accesslab-preflight-4fx4vzpj.tmp",
+          "critical": true
+        },
+        {
+          "id": "database",
+          "label": "Database state",
+          "status": "pass",
+          "summary": "SQLite quick_check passed for <workspace>/data/school-box-demo/accesslab.db.",
+          "detail": "2 document(s), 1 QA session(s), 1 code session(s), 2 label(s), and 0 captured example(s) in judge demo class.",
+          "critical": true
+        },
+        {
+          "id": "deployment",
+          "label": "Deployment mode",
+          "status": "info",
+          "summary": "School AI box",
+          "detail": "one stronger LAN machine serving many classroom browsers",
+          "critical": false
+        },
+        {
+          "id": "class-space",
+          "label": "Class space",
+          "status": "info",
+          "summary": "judge demo class",
+          "detail": "Shared material and saved-session scope for this deployment.",
+          "critical": false
+        },
+        {
+          "id": "queue",
+          "label": "Concurrent job limit",
+          "status": "info",
+          "summary": "1 capacity slot(s)",
+          "detail": "Queue depth 0 with 0 active, 0 waiting, and 1 slot(s) currently free.",
+          "critical": false
+        },
+        {
+          "id": "training-capture",
+          "label": "Training-data capture",
+          "status": "info",
+          "summary": "Opt-in local capture off",
+          "detail": "Structured tuning capture is off; saved sessions can still be exported manually.",
+          "critical": false
+        }
+      ]
+    }
+  },
+  "demo_checklist": [
+    "Start with ACCESSLAB_DEPLOYMENT_MODE=school-box-shared.",
+    "Use class-space judge-demo-class unless the judge asks for a different class.",
+    "Pull gemma4:e4b and embeddinggemma before the demo.",
+    "Keep ACCESSLAB_MAX_CONCURRENT_JOBS=1 for the safest live demo.",
+    "Show local URL http://127.0.0.1:8000 and LAN URL from the host network settings.",
+    "Expected failures: missing Gemma 4 model, missing EmbeddingGemma, OCR extras unavailable, or long queue wait during embedding/generation."
+  ],
+  "classroom_limitations": [
+    "One host bottlenecks under simultaneous generation, OCR, and embedding work.",
+    "The queue is local/in-process in this prototype.",
+    "School-box mode is intended for supervised local classroom deployment.",
+    "This is not production multi-user serving or a production secure sandbox."
+  ],
+  "total_seconds": 23.273
+}

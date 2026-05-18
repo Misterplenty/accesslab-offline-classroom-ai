@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% import "_ui.html" as ui %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{{ app_name }}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css?v=20260519-final" />
+    {% block head_extras %}{% endblock %}
+  </head>
+  <body class="app-body" data-view="{{ active_view }}"{% if focus_target_id %} data-focus-target="{{ focus_target_id }}"{% endif %}>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="app-topbar" role="banner">
+      <div class="app-topbar__inner">
+        <div class="app-brand">
+          <a href="/" class="brand" aria-label="{{ app_name }} — go to workspace">
+            {{ app_name }}
+          </a>
+        </div>
+
+        <nav class="app-nav" aria-label="Main navigation">
+          <a href="/" aria-label="Workspace" {% if active_view == "home" %}aria-current="page"{% endif %}>Home</a>
+          <a href="/qa" aria-label="Explain materials" {% if active_view == "qa" %}aria-current="page"{% endif %}>Ask</a>
+          <a href="/code" aria-label="Fix Python code" {% if active_view == "code" %}aria-current="page"{% endif %}>Code Assist</a>
+          <a href="/admin" aria-label="System view" {% if active_view == "admin" %}aria-current="page"{% endif %}>System</a>
+        </nav>
+
+        <div class="topbar-controls">
+          <form class="role-switcher" action="/role" method="post" aria-label="Select local role">
+            <input type="hidden" name="next_path" value="{{ role_switch_target }}" />
+            <label for="local-role" class="role-switcher__label">Local role</label>
+            <div class="role-switcher__controls">
+              <select id="local-role" name="role">
+                {% for option in role_options %}
+                  <option value="{{ option.id }}"{% if option.selected == 'true' %} selected{% endif %}>{{ option.label }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="btn-secondary">Apply</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="app-main">
+      <div class="app-shell">
+        <div
+          id="status-region"
+          class="page-status page-status--{{ status_tone }}{% if not status_message and not status_title and not status_body %} is-hidden{% endif %}"
+          role="{% if status_tone == 'error' %}alert{% else %}status{% endif %}"
+          aria-live="polite"
+          aria-atomic="true"
+          tabindex="-1"
+        >
+          {% if status_title %}
+            <p class="page-status__title">{{ status_title }}</p>
+          {% endif %}
+          {% if status_body or status_message %}
+            <p class="page-status__body">{{ status_body or status_message }}</p>
+          {% endif %}
+          {% if status_action_href and status_action_label %}
+            <p class="page-status__action">
+              <a href="{{ status_action_href }}">{{ status_action_label }}</a>
+            </p>
+          {% endif %}
+        </div>
+
+        {% if page_notices %}
+          <div class="page-notice-stack" aria-label="Current runtime notices">
+            {% for notice in page_notices %}
+              {{ ui.notice(
+                notice.title,
+                notice.body,
+                notice.tone,
+                action_href=notice.action_href,
+                action_label=notice.action_label
+              ) }}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% block page_header %}{% endblock %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <div class="app-footer__inner">
+        <p class="app-footer__note">{{ app_name }}</p>
+        <div class="accessibility-toolbar" aria-label="Accessibility options">
+          <span class="accessibility-toolbar__label">Inclusive Classroom</span>
+          <button type="button" class="btn-secondary" data-a11y-toggle="large-text" aria-pressed="false">Large text</button>
+          <button type="button" class="btn-secondary" data-a11y-toggle="high-contrast" aria-pressed="false">High contrast</button>
+          <button type="button" class="btn-secondary" data-a11y-toggle="plain-language" aria-pressed="false">Plain language</button>
+          <button type="button" class="btn-secondary" data-a11y-toggle="reduce-motion" aria-pressed="false">Reduce motion</button>
+          <button type="button" class="btn-secondary" data-a11y-toggle="keyboard" aria-pressed="false">Keyboard mode</button>
+          <span id="a11y-mode-status" class="visually-hidden" aria-live="polite"></span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/app.js?v=20260519-final" defer></script>
+  </body>
+</html>

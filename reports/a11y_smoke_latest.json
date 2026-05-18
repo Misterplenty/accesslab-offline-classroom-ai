@@ -1,0 +1,166 @@
+{
+  "generated_at": "2026-05-18T19:14:53.264466+00:00",
+  "base_url": "http://127.0.0.1:60981",
+  "claim_level": "automated smoke gate, not WCAG certification",
+  "checks": [
+    {
+      "slug": "landmark-structure",
+      "title": "Heading and landmark structure",
+      "passed": true,
+      "detail": "The shell keeps a single page heading plus header, nav, main, and footer landmarks for screen-reader navigation."
+    },
+    {
+      "slug": "main-navigation-skip-link",
+      "title": "Main navigation and skip link",
+      "passed": true,
+      "detail": "Skip link receives focus first and shows visible focus styling."
+    },
+    {
+      "slug": "inclusive-classroom-toolbar",
+      "title": "Inclusive Classroom toolbar",
+      "passed": true,
+      "detail": "Large text, high contrast, plain language, reduce motion, and keyboard modes are toggleable and persisted locally."
+    },
+    {
+      "slug": "role-switch-teacher",
+      "title": "Role switch and teacher controls",
+      "passed": true,
+      "detail": "Teacher mode exposes upload controls without showing a separate admin shell."
+    },
+    {
+      "slug": "upload-flow-focus",
+      "title": "Upload flow and redirect focus",
+      "passed": true,
+      "detail": "Teacher upload keeps the interaction in-page, restores focus to the status region, and updates the shared class collection."
+    },
+    {
+      "slug": "inclusive-form-preferences",
+      "title": "Inclusive form preferences",
+      "passed": true,
+      "detail": "Plain-language mode feeds grounded QA, and the visible progress contract names the Gemma 4 answering stage."
+    },
+    {
+      "slug": "qa-flow-save-focus",
+      "title": "QA flow and saved-answer focus",
+      "passed": true,
+      "detail": "Grounded QA lands on a saved URL and returns focus to the status region."
+    },
+    {
+      "slug": "citation-jump-flow",
+      "title": "Citation jump flow",
+      "passed": true,
+      "detail": "Keyboard activation jumps to the evidence card, focuses it, and keeps it clear of the page header."
+    },
+    {
+      "slug": "qa-disclosure-focus",
+      "title": "Disclosure open/close focus",
+      "passed": true,
+      "detail": "The detail disclosure toggles open and closed without losing keyboard focus."
+    },
+    {
+      "slug": "read-aloud-transcript",
+      "title": "Read-aloud transcript",
+      "passed": true,
+      "detail": "Generated answer audio is optional; the same content remains available as text."
+    },
+    {
+      "slug": "source-inspection-flow",
+      "title": "Source inspection flow",
+      "passed": true,
+      "detail": "The cited source view opens with the cited excerpt visible first."
+    },
+    {
+      "slug": "code-tutor-flow",
+      "title": "Code tutor flow",
+      "passed": true,
+      "detail": "Code tutor saves to a stable URL and keeps disclosure focus stable after opening evidence."
+    },
+    {
+      "slug": "admin-system-view",
+      "title": "Admin system view",
+      "passed": true,
+      "detail": "Admin mode exposes runtime, retrieval, indexing, OCR, and queue diagnostics in one server-rendered page."
+    }
+  ],
+  "counts": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0
+  },
+  "manual_validation_checklist": [
+    {
+      "title": "Inclusive Classroom Mode",
+      "status": "covered-by-smoke",
+      "detail": "Large text, high contrast, plain language, reduce motion, and keyboard mode toggles are exercised."
+    },
+    {
+      "title": "Read-aloud transcript",
+      "status": "covered-by-smoke",
+      "detail": "Answer read-aloud controls are paired with visible transcript text."
+    },
+    {
+      "title": "Keyboard-only upload",
+      "status": "covered-by-smoke",
+      "detail": "Teacher role switch, file input, submit button, redirect, and status-region focus are exercised."
+    },
+    {
+      "title": "Keyboard-only QA",
+      "status": "covered-by-smoke",
+      "detail": "Question entry, submit activation, saved URL, and status-region focus are exercised."
+    },
+    {
+      "title": "Keyboard-only citation/source navigation",
+      "status": "covered-by-smoke",
+      "detail": "Citation jump focus and source inspection popup are exercised."
+    },
+    {
+      "title": "Keyboard-only code tutor",
+      "status": "covered-by-smoke",
+      "detail": "Textarea entry, submit activation, saved URL, and evidence disclosure focus are exercised."
+    },
+    {
+      "title": "Focus restoration after saved session redirect",
+      "status": "covered-by-smoke",
+      "detail": "QA and code saved redirects wait for focus on the status region."
+    },
+    {
+      "title": "Visible progress states",
+      "status": "covered-by-smoke",
+      "detail": "QA and code forms expose text progress stages instead of relying on audio or a static spinner."
+    },
+    {
+      "title": "Role switching",
+      "status": "covered-by-smoke",
+      "detail": "Teacher, learner, and admin role transitions are exercised in one browser session."
+    },
+    {
+      "title": "Admin navigation",
+      "status": "covered-by-smoke",
+      "detail": "Admin system view reachability and diagnostics section visibility are exercised."
+    }
+  ],
+  "screen_reader_validation_notes": [
+    {
+      "platform": "NVDA / Windows",
+      "status": "not-run-on-this-host",
+      "note": "No Windows/NVDA environment was available in this run; keep this as a manual release check before a Windows classroom claim."
+    },
+    {
+      "platform": "VoiceOver / macOS",
+      "status": "manual-spot-check-recommended",
+      "note": "The current host is macOS, but this smoke does not automate speech output; use VoiceOver rotor checks for landmarks, forms, citations, and saved redirects."
+    },
+    {
+      "platform": "TalkBack / Android",
+      "status": "not-run-on-this-host",
+      "note": "No Android/TalkBack device was available in this run; do not claim Android screen-reader validation from this artifact."
+    }
+  ],
+  "known_accessibility_limits": [
+    "The smoke gate is not WCAG certification.",
+    "The browser and screen-reader matrix may be incomplete.",
+    "OCR quality affects document accessibility and source usefulness.",
+    "Code editor fields are simple textareas, not full IDE accessibility surfaces.",
+    "Speech-output quality still needs manual assistive-technology review."
+  ]
+}

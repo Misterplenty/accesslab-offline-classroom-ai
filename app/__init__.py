@@ -1,0 +1,1 @@
+"""AccessLab application package."""

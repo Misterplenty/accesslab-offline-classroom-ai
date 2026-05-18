@@ -1,0 +1,28 @@
+Beginner Python notes
+
+A loop repeats a step.
+A for loop is useful when you want to visit each value in a group.
+
+Example:
+for score in scores:
+    print(score)
+
+What this means:
+- scores is the whole list
+- score is one value from the list
+- the loop runs once for each value
+- print(score) shows one score at a time
+
+Another example:
+numbers = [3, 5, 8]
+
+for item in numbers:
+    print(item)
+
+This means:
+- the program goes through numbers one item at a time
+- item becomes 3, then 5, then 8
+- the loop variable only holds one value on each turn
+
+Simple explanation:
+A for loop is like checking each card in a stack one by one.

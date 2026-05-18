@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-05-18T10:06:49.343213+00:00",
+  "run_count": 1,
+  "real_hardware_run_count": 1,
+  "constrained_proxy_run_count": 0,
+  "device_tiers": [
+    "Teacher laptop / mini-PC"
+  ],
+  "runs": [
+    {
+      "run_id": "20260518T100128Z-judge-demo-host-gemma4-e4b-full-proof-20260518",
+      "run_label": "full-proof-20260518",
+      "source_path": "reports/runs/20260518T100128Z-judge-demo-host-gemma4-e4b-full-proof-20260518/summary.json",
+      "generated_at": "2026-05-18T10:06:39.719585+00:00",
+      "device_label": "judge-demo-host",
+      "device_tier": "teacher-laptop",
+      "device_tier_display": "Teacher laptop / mini-PC",
+      "platform": "macOS-15.7.4-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "cpu_brand": "Apple M4 Pro",
+      "logical_cores": 14,
+      "memory_gb": 24.0,
+      "runtime_backend": "ollama",
+      "model": "gemma4:e4b",
+      "model_tier": "E4B",
+      "deployment_mode": "school-box-shared",
+      "deployment_mode_display": "School AI box",
+      "requested_retrieval_mode": "hybrid",
+      "effective_retrieval_mode": "hybrid",
+      "effective_retrieval_mode_display": "Hybrid",
+      "semantic_available": true,
+      "semantic_status_code": "ok",
+      "ocr_available": false,
+      "avg_ttft_seconds": 11.33,
+      "avg_total_seconds": 13.516,
+      "avg_prompt_eval_count": 824.0,
+      "avg_eval_count": 609.0,
+      "avg_queue_wait_seconds": 0.0,
+      "peak_memory_mb": 54.1,
+      "pass_rate": 1.0,
+      "code_pass_rate": 1.0,
+      "answer_support_rate": 1.0,
+      "citation_presence_rate": 1.0
+    }
+  ],
+  "what_this_proves": [
+    "The listed benchmark rows ran on the recorded local hardware and runtime backend.",
+    "Gemma 4 task pass, citation, code repair, latency, token, queue, OCR, and semantic fields are taken from run artifacts.",
+    "Rows marked teacher-laptop, standard-laptop, school-box-host, or edge-validation-device are hardware evidence for that recorded host only."
+  ],
+  "what_this_does_not_prove": [
+    "It does not prove performance on lowest-end phones or untested devices.",
+    "It does not prove production multi-user serving.",
+    "It does not prove secure code sandboxing.",
+    "Constrained-proxy rows are stress comparisons on the same host, not separate hardware tiers."
+  ],
+  "honest_limits": [
+    "Unknown tiers are not marketed as target tiers.",
+    "A single host result should be described as measured hardware evidence, not a fleet guarantee.",
+    "LiteRT-LM rows remain validation-only unless their runtime backend was actually exercised."
+  ]
+}

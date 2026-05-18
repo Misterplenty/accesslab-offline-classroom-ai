@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-05-18T19:18:42+00:00",
+  "overall_status": "passed",
+  "failure_reason": "",
+  "sandbox_profile": "audit-posix",
+  "sandbox_note": "Best-effort local sandbox: temp directory, scrubbed environment, Python runtime policy checks, and POSIX resource limits. The Linux-only memory ceiling is unavailable on this platform.",
+  "safe_status": "completed",
+  "safe_passed": true,
+  "blocked_status": "blocked",
+  "blocked_denied_by_policy": true,
+  "blocked_message_present": true
+}

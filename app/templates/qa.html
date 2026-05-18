@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}Explain Materials — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {{ ui.page_header(
+    title="Ask from materials",
+    summary=None
+  ) }}
+{% endblock %}
+
+{% block content %}
+  <div class="page-layout page-layout--single page-layout--qa">
+    {% if not qa_result %}
+      {% call ui.section_block(
+        None,
+        None,
+        classes="section-block--surface"
+      ) %}
+        {% if not documents %}
+          {{ ui.notice(
+            "No materials indexed yet",
+            "Upload a worksheet or class notes on the Workspace page before asking grounded questions.",
+            "warn",
+            action_href="/",
+            action_label="Go to Workspace"
+          ) }}
+        {% else %}
+          <p class="field-note">{{ document_count }} indexed file{% if document_count != 1 %}s{% endif %}.</p>
+        {% endif %}
+
+        <form
+          action="/qa"
+          method="post"
+          data-status="Gemma 4 is preparing your answer."
+          data-pending-title="Gemma 4 is working"
+          data-pending-detail="AccessLab is checking your question, finding local evidence, then writing the cited answer."
+          data-submit-label="Working..."
+          data-status-steps="Checking question|Searching indexed materials|Reading evidence with Gemma 4|Writing cited answer|Saving answer"
+          aria-label="Ask a question about your local materials"
+          class="form-stack"
+        >
+          <input type="hidden" name="inclusive_plain_language" value="0" data-a11y-plain-input />
+          <label for="question" class="field-label">Question</label>
+          <textarea
+            id="question"
+            name="question"
+            rows="4"
+            required
+            placeholder="{% if qa_form_disabled %}Upload materials first.{% else %}e.g. Explain question 3 in simple language.{% endif %}"
+            {% if qa_form_disabled %}disabled{% endif %}
+          >{{ question_value or "" }}</textarea>
+
+          <label for="answer-language" class="field-label">Answer language</label>
+          <select id="answer-language" name="answer_language" {% if qa_form_disabled %}disabled{% endif %}>
+            {% for option in answer_language_options %}
+              <option value="{{ option.value }}"{% if option.selected == 'true' %} selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+          </select>
+
+          <div class="button-row">
+            <button type="submit" name="simplify" value="0" {% if qa_form_disabled %}disabled{% endif %}>Explain</button>
+            <button
+              type="submit"
+              name="simplify"
+              value="1"
+              class="btn-secondary"
+              {% if qa_form_disabled %}disabled{% endif %}
+            >
+              Plain language
+            </button>
+          </div>
+        </form>
+      {% endcall %}
+    {% endif %}
+
+    {% if qa_result %}
+      <div class="qa-result-layout">
+        <div class="answer-column">
+          {% call ui.section_block(
+            "Answer",
+            None,
+            classes="section-block--surface",
+            heading_id="qa-result-heading"
+          ) %}
+            <div class="section-tools">
+              <div class="question-summary">
+                <span class="question-summary__label">Question asked</span>
+                <p>{{ qa_result.question }}</p>
+              </div>
+              <div class="toolbar" role="toolbar" aria-label="Answer tools">
+                <a class="button-link button-link--secondary" href="/qa">Ask another question</a>
+                {% if qa_short_rendered_html %}
+                  <button
+                    class="btn-secondary"
+                    type="button"
+                    data-read-aloud-target="qa-answer-text"
+                    data-read-aloud-status="qa-read-aloud-status"
+                  >
+                    Read answer aloud
+                  </button>
+                {% endif %}
+                {% if qa_detail_paragraphs %}
+                  <button
+                    class="btn-secondary"
+                    type="button"
+                    data-disclosure-target="qa-detail"
+                    data-label-show="Show step-by-step explanation"
+                    data-label-hide="Hide step-by-step explanation"
+                    aria-controls="qa-detail"
+                  >
+                    Show step-by-step explanation
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+
+            {% if qa_notice %}
+              {{ ui.notice(
+                qa_notice.title,
+                qa_notice.body,
+                qa_notice.tone,
+                action_href=qa_notice.action_href,
+                action_label=qa_notice.action_label
+              ) }}
+            {% endif %}
+
+            <div id="qa-answer-text" class="answer-frame" aria-label="Answer based on local sources">
+              {% if qa_short_rendered_html %}
+                <div class="rich-answer">{{ qa_short_rendered_html|safe }}</div>
+              {% else %}
+                {{ ui.empty_state(
+                  "No answer text returned.",
+                  "Check that materials are indexed and the local model is available, then try the question again."
+                ) }}
+              {% endif %}
+            </div>
+
+            {% if qa_short_rendered_html %}
+              <p id="qa-read-aloud-status" class="field-note read-aloud-status" role="status" aria-live="polite"></p>
+              <details class="details-card details-card--nested read-aloud-transcript">
+                <summary>Read-aloud transcript</summary>
+                <div class="rich-answer">{{ qa_short_rendered_html|safe }}</div>
+              </details>
+            {% endif %}
+
+            {% if qa_detail_paragraphs %}
+              <div id="qa-detail" class="disclosure-panel section-space">
+                <div class="rich-answer">{{ qa_detail_rendered_html|safe }}</div>
+              </div>
+            {% endif %}
+          {% endcall %}
+        </div>
+
+        <aside class="evidence-column">
+          {% if current_role_id != "learner" %}
+          <div class="trust-panel section-space" aria-label="Answer trust details">
+            <div class="trust-panel__header">
+              <h3 class="trust-panel__title">Proof</h3>
+              <span class="trust-panel__badge">● Local</span>
+            </div>
+            <div class="trust-metric-list">
+              {% for row in qa_trust_rows %}
+                <div class="trust-metric">
+                  <strong>{{ row.label }}</strong>
+                  <span>{{ row.value }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="section-space">
+            <h3 class="subsection-title">Evidence</h3>
+            {% if qa_result.citations %}
+              <div class="evidence-list">
+                {% for card in qa_evidence_cards %}
+                  <article
+                    id="{{ card.anchor_id }}"
+                    class="evidence-card evidence-item"
+                    tabindex="-1"
+                    aria-labelledby="{{ card.anchor_id }}-title"
+                    aria-describedby="{{ card.anchor_id }}-snippet"
+                  >
+                    <div class="evidence-card__meta evidence-item__header">
+                      <span class="evidence-card__label evidence-item__label">{{ card.label }}</span>
+                      <strong id="{{ card.anchor_id }}-title" class="evidence-item__title">{{ card.source_file }}</strong>
+                      {% if card.page_label %}
+                        <span>{{ card.page_label }}</span>
+                      {% endif %}
+                    </div>
+                    <blockquote id="{{ card.anchor_id }}-snippet" class="evidence-item__snippet">{{ card.snippet }}</blockquote>
+                    <a
+                      class="evidence-item__action button-link button-link--secondary"
+                      href="{{ card.source_href }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="{{ card.source_view_label }}"
+                      title="Read the full reference document"
+                    >Read reference →</a>
+                  </article>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ ui.empty_state(
+                qa_evidence_empty_state.title,
+                qa_evidence_empty_state.body,
+                qa_evidence_empty_state.action_href,
+                qa_evidence_empty_state.action_label
+              ) }}
+            {% endif %}
+          </div>
+        </aside>
+      </div>
+{% endif %}
+
+    {% if qa_result and qa_result.history_id and can_label_saved_sessions %}
+      <details class="details-card">
+        <summary>Teacher review labels</summary>
+        {% if qa_session_labels %}
+          <ul class="clean-list">
+            {% for row in qa_session_labels %}
+              <li>{{ row.label_display }}{% if row.note %}: {{ row.note }}{% endif %} · {{ row.actor_role }} · {{ row.created_at }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="body-copy body-copy--secondary">No local review labels yet.</p>
+        {% endif %}
+
+        <form action="/session-labels" method="post" class="form-stack form-stack--compact">
+          <input type="hidden" name="source_type" value="qa" />
+          <input type="hidden" name="source_id" value="{{ qa_result.history_id }}" />
+          <input type="hidden" name="redirect_to" value="/qa?qa_id={{ qa_result.history_id }}" />
+          <label for="qa-label" class="field-label">Add label</label>
+          <select id="qa-label" name="label">
+            {% for option in quality_label_options %}
+              <option value="{{ option.value }}">{{ option.label }}</option>
+            {% endfor %}
+          </select>
+          <label for="qa-label-note" class="field-label">Short note (optional)</label>
+          <textarea id="qa-label-note" name="note" rows="2"></textarea>
+          <div class="button-row">
+            <button type="submit" class="btn-secondary">Save local label</button>
+          </div>
+        </form>
+      </details>
+    {% endif %}
+  </div>
+{% endblock %}

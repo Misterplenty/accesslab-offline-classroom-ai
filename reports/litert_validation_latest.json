@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-05-18T10:14:43.056555+00:00",
+  "backend": "litert-lm-validation",
+  "model": "gemma4:e4b",
+  "profile": "grounded-qa-smoke",
+  "command_configured": false,
+  "health_ok": false,
+  "health_message": "LiteRT-LM validation is configured but no executable probe is set. Set ACCESSLAB_LITERT_LM_COMMAND.",
+  "capabilities": {
+    "backend_name": "litert-lm-validation",
+    "runtime_label": "LiteRT-LM validation scaffold",
+    "validation_stage": "experimental-validation",
+    "supports_streaming": false,
+    "token_timings_available": false,
+    "model_listing_available": false,
+    "health_probe_shape": "No command configured. Set ACCESSLAB_LITERT_LM_COMMAND for an executable validation probe.",
+    "semantic_dependency_shape": "LiteRT-LM validation covers generation only. EmbeddingGemma remains the default local semantic retrieval dependency unless a separate edge embedding path is validated.",
+    "supports_generation": false,
+    "validation_only": true,
+    "supports_health_probe": true,
+    "supported_profiles": [
+      "grounded-qa-smoke"
+    ],
+    "supports_model_listing": false,
+    "supports_token_timings": false
+  },
+  "generation_exercised": false,
+  "total_seconds": null,
+  "configuration_env": "ACCESSLAB_LITERT_LM_COMMAND",
+  "missing_configuration": "ACCESSLAB_LITERT_LM_COMMAND",
+  "expected_command_contract": {
+    "stdin_json_fields": [
+      "model",
+      "profile",
+      "prompt",
+      "context",
+      "settings"
+    ],
+    "accepted_stdout_shapes": [
+      "plain text",
+      "JSON response",
+      "JSON text",
+      "JSON answer"
+    ],
+    "fail_closed_on": [
+      "missing command",
+      "missing executable",
+      "non-zero exit",
+      "empty output",
+      "missing response text"
+    ]
+  },
+  "future_validation_will_prove": [
+    "The target device can execute a local LiteRT-LM generation command for the narrow AccessLab prompt contract.",
+    "The validation backend can return a grounded answer without cloud fallback.",
+    "The measured target can be compared against the Ollama baseline for the same prompt and context.",
+    "The result remains validation-only until broader product flows are run."
+  ],
+  "prompt": "Return a concise grounded answer using [S1]. If the context is insufficient, say you are unsure.",
+  "context": "[S1] AccessLab answers only from local classroom materials and cites uploaded sources.",
+  "response": "",
+  "error": "",
+  "intended_device_class": "edge-validation-device or constrained local validation host",
+  "honest_limits": [
+    "validation-only",
+    "non-default",
+    "generation-only command contract",
+    "no cloud fallback",
+    "no unsupported-device support claim"
+  ]
+}

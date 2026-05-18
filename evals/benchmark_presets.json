@@ -1,0 +1,99 @@
+{
+  "version": "AccessLab deployment benchmark presets v1",
+  "presets": [
+    {
+      "id": "grounded-qa-lexical-e2b",
+      "kind": "eval",
+      "description": "Grounded QA with SQLite FTS5 only on Gemma 4 E2B.",
+      "model": "gemma4:e2b",
+      "retrieval_mode": "lexical",
+      "categories": "worksheet/local-doc",
+      "device_tier": "standard-laptop"
+    },
+    {
+      "id": "grounded-qa-hybrid-e2b",
+      "kind": "eval",
+      "description": "Grounded QA with requested hybrid retrieval on Gemma 4 E2B.",
+      "model": "gemma4:e2b",
+      "retrieval_mode": "hybrid",
+      "categories": "worksheet/local-doc",
+      "device_tier": "standard-laptop"
+    },
+    {
+      "id": "grounded-qa-hybrid-e4b",
+      "kind": "eval",
+      "description": "Grounded QA with requested hybrid retrieval on Gemma 4 E4B.",
+      "model": "gemma4:e4b",
+      "retrieval_mode": "hybrid",
+      "categories": "worksheet/local-doc",
+      "device_tier": "teacher-laptop"
+    },
+    {
+      "id": "grounded-qa-semantic-e4b",
+      "kind": "eval",
+      "description": "Grounded QA with requested EmbeddingGemma-only semantic retrieval on Gemma 4 E4B.",
+      "model": "gemma4:e4b",
+      "retrieval_mode": "semantic",
+      "categories": "worksheet/local-doc",
+      "device_tier": "teacher-laptop"
+    },
+    {
+      "id": "python-repair-e2b",
+      "kind": "eval",
+      "description": "Verified beginner Python repair on Gemma 4 E2B.",
+      "model": "gemma4:e2b",
+      "retrieval_mode": "lexical",
+      "categories": "beginner-python-bug-fix",
+      "device_tier": "standard-laptop"
+    },
+    {
+      "id": "python-repair-e4b",
+      "kind": "eval",
+      "description": "Verified beginner Python repair on Gemma 4 E4B.",
+      "model": "gemma4:e4b",
+      "retrieval_mode": "lexical",
+      "categories": "beginner-python-bug-fix",
+      "device_tier": "teacher-laptop"
+    },
+    {
+      "id": "school-box-shared-queued-load",
+      "kind": "school_box_load",
+      "description": "Synthetic local queued load for school-box shared deployment.",
+      "device_tier": "school-box-host",
+      "jobs": 12,
+      "max_concurrent_jobs": 1
+    },
+    {
+      "id": "accessibility-smoke",
+      "kind": "a11y_smoke",
+      "description": "Inclusive Classroom Mode smoke: keyboard flow, low-vision modes, plain-language mode, visible progress, source opening, and read-aloud transcript checks.",
+      "device_tier": "teacher-laptop"
+    },
+    {
+      "id": "inclusive-classroom-smoke",
+      "kind": "a11y_smoke",
+      "description": "Judge-facing accessibility benchmark for visual, hearing, motor, and learning supports in the server-rendered app.",
+      "device_tier": "teacher-laptop"
+    },
+    {
+      "id": "inclusive-school-box-stress",
+      "kind": "school_box_load",
+      "description": "Higher-concurrency school-box stress preset for inclusive classroom mode demonstrations.",
+      "device_tier": "school-box-host",
+      "jobs": 24,
+      "max_concurrent_jobs": 2
+    },
+    {
+      "id": "semantic-unavailable-fallback",
+      "kind": "eval",
+      "description": "Requested hybrid retrieval with semantic disabled to prove lexical fallback reporting.",
+      "model": "gemma4:e4b",
+      "retrieval_mode": "hybrid",
+      "categories": "worksheet/local-doc",
+      "device_tier": "standard-laptop",
+      "env": {
+        "ACCESSLAB_SEMANTIC_ENABLED": "off"
+      }
+    }
+  ]
+}

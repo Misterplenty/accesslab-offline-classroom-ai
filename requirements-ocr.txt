@@ -1,0 +1,21 @@
+# OCR dependencies for AccessLab.
+#
+# Install with:
+#   pip install -r requirements-ocr.txt
+#
+# These packages enable the local OCR fallback for scanned / image-based
+# PDFs (see reports/ocr_decision_memo.md). The main requirements file
+# includes this file so normal installs are ready for scanned classroom PDFs.
+#
+# The chosen stack is CPU-friendly, local-only, and does not pull in
+# PyTorch or any cloud service:
+#   - rapidocr-onnxruntime: ONNX-based OCR (bundled small detector/recognizer models)
+#   - pypdfium2:            MIT-licensed PDF renderer; ships pdfium binary via pip,
+#                           so no system poppler/tesseract install is required.
+#
+# If these cannot be installed on your device, AccessLab will still ingest
+# text PDFs normally. Scanned PDFs will fail clearly with an "OCR
+# unavailable" message instead of silently indexing empty content.
+numpy>=1.26
+rapidocr-onnxruntime==1.2.3
+pypdfium2==5.7.0

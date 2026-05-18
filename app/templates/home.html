@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}{{ app_name }} — Workspace{% endblock %}
+
+
+
+
+{% block content %}
+  <div class="page-layout page-layout--single">
+    <div class="workspace-title">
+      <h1>Workspace</h1>
+    </div>
+    <div class="action-grid" aria-label="Workspace actions">
+      <a href="/qa" class="action-card action-card--primary">
+        <div class="action-card__icon">?</div>
+        <h3>Ask from local materials</h3>
+        <p>Get cited answers using uploaded documents.</p>
+      </a>
+      <a href="/code" class="action-card">
+        <div class="action-card__icon">{ }</div>
+        <h3>Repair beginner Python</h3>
+        <p>Fix errors and explain code locally.</p>
+      </a>
+      <a href="#class-summary" class="action-card">
+        <div class="action-card__icon">✓</div>
+        <h3>Review classroom progress</h3>
+        <p>See recent questions and code repairs.</p>
+      </a>
+      {% if current_role_id in ["teacher", "admin", "demo"] %}
+      <a href="/judge-demo" class="action-card">
+        <div class="action-card__icon">▶</div>
+        <h3>Run Judge Demo</h3>
+        <p>Start a guided tour of the features.</p>
+      </a>
+      {% endif %}
+    </div>
+    {% call ui.section_block(
+      "Add classroom materials",
+      None,
+      classes="section-block--surface",
+      heading_id="upload-materials"
+    ) %}
+      {% if can_upload %}
+        <form
+          action="/upload"
+          method="post"
+          enctype="multipart/form-data"
+          data-status="Uploading and indexing."
+          data-pending-title="Indexing file"
+          data-pending-detail="Extracting text and updating search."
+          data-submit-label="Indexing..."
+          data-status-steps="Save file|Extract text|Update search"
+          aria-label="Upload a local document"
+          class="form-stack"
+        >
+          <div class="upload-surface" data-dropzone>
+            <input
+              id="document"
+              name="document"
+              type="file"
+              accept=".pdf,.txt,.md"
+              required
+              aria-describedby="upload-role-note"
+            />
+            <div class="upload-surface__inner">
+              <svg class="upload-surface__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p class="upload-surface__label" data-dropzone-label>Drop a file here or click to browse</p>
+              <p id="upload-role-note" class="upload-surface__hint">PDF, TXT, or MD &middot; Adds searchable material</p>
+            </div>
+          </div>
+        </form>
+      {% else %}
+        {{ ui.notice(
+          "Upload locked",
+          "Switch to Teacher or Admin to upload files.",
+          "info"
+        ) }}
+      {% endif %}
+
+      {% if ingest_feedback %}
+        {{ ui.notice(
+          ingest_feedback.title,
+          ingest_feedback.body,
+          ingest_feedback.tone,
+          "section-space",
+          ingest_feedback.action_href,
+          ingest_feedback.action_label
+        ) }}
+      {% endif %}
+
+      {% if ingest_result %}
+        <dl class="definition-grid definition-grid--compact">
+          <div class="definition-grid__item">
+            <dt>File</dt>
+            <dd>{{ ingest_result.file_name }}</dd>
+          </div>
+          <div class="definition-grid__item">
+            <dt>Indexed evidence sections</dt>
+            <dd>{{ ingest_result.chunks_created }}</dd>
+          </div>
+          {% if ingest_result.ocr_pages_applied %}
+            <div class="definition-grid__item">
+              <dt>OCR pages</dt>
+              <dd>{{ ingest_result.ocr_pages_applied }}</dd>
+            </div>
+          {% endif %}
+        </dl>
+
+        {% if ingest_result.notes or ingest_result.stored_path %}
+          <details class="details-card section-space">
+            <summary>Upload details</summary>
+            {% if ingest_result.notes %}
+              <ul class="clean-list">
+                {% for note in ingest_result.notes %}
+                  <li>{{ note }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if ingest_result.stored_path %}
+              <p class="field-note"><strong>Storage:</strong> Stored locally in this AccessLab workspace.</p>
+            {% endif %}
+          </details>
+        {% endif %}
+      {% endif %}
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Class Library",
+      None,
+      classes="section-block--surface workspace-panel workspace-panel--library"
+    ) %}
+      {% if documents %}
+        <ul class="library-list" aria-label="Indexed materials">
+          {% for doc in documents %}
+            <li class="library-row{% if doc.is_recent_upload %} library-row--recent{% endif %}">
+              <div class="library-file">
+                <span class="library-file__type">{{ doc.file_type_label }}</span>
+                <div class="library-file__details">
+                  <p class="library-file__name">{{ doc.file_name }}</p>
+                  <p class="library-file__meta">{{ doc.chunk_label }}</p>
+                </div>
+              </div>
+              {% if can_manage_materials %}
+                <form action="/documents/{{ doc.document_id }}/delete" method="post" class="inline-action-form library-row__action">
+                  <button type="submit" class="btn-danger">Remove</button>
+                </form>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        {{ ui.empty_state(
+          "No materials indexed yet.",
+          "Upload a worksheet, notes, or study guide." if can_upload else "Switch to Teacher or Admin to upload files."
+        ) }}
+      {% endif %}
+    {% endcall %}
+
+    {% if current_role_id in ["teacher", "admin"] %}
+      {% call ui.section_block(
+        "Class summary",
+        None,
+        classes="section-block--surface workspace-panel workspace-panel--summary",
+        heading_id="class-summary"
+      ) %}
+        <div class="summary-metrics dashboard-metrics" aria-label="Class activity totals">
+          {{ ui.meta_item("Grounded answers", teacher_summary.qa_count, mono=True) }}
+          {{ ui.meta_item("Code assists", teacher_summary.code_count, mono=True) }}
+          {{ ui.meta_item("Documents", teacher_summary.document_count, mono=True) }}
+        </div>
+
+        <div class="insight-grid section-space">
+          <div class="insight-panel">
+            <h3 class="subsection-title">Top student questions</h3>
+            {% if teacher_summary.top_questions %}
+              <ul class="insight-list">
+                {% for row in teacher_summary.top_questions %}
+                  <li class="insight-row">
+                    <a href="{{ row.href }}" class="insight-row__link">
+                      <span class="insight-row__title">{{ row.question }}</span>
+                      <span class="insight-row__meta">{{ row.count }} asked</span>
+                      <span class="insight-row__cue" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="body-copy body-copy--secondary">No questions yet.</p>
+            {% endif %}
+          </div>
+
+          <div class="insight-panel">
+            <h3 class="subsection-title">Needs teacher follow-up</h3>
+            {% if teacher_summary.weak_questions %}
+              <ul class="insight-list">
+                {% for row in teacher_summary.weak_questions %}
+                  <li class="insight-row">
+                    <a href="{{ row.href }}" class="insight-row__link">
+                      <span class="insight-row__title">{{ row.question }}</span>
+                      <span class="insight-row__meta insight-row__meta--warn">{{ row.state }}</span>
+                      <span class="insight-row__cue" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="body-copy body-copy--secondary">No weak or no-match questions.</p>
+            {% endif %}
+          </div>
+
+          <div class="insight-panel">
+            <h3 class="subsection-title">Common code bug categories</h3>
+            {% if teacher_summary.bug_categories %}
+              <ul class="insight-list">
+                {% for row in teacher_summary.bug_categories %}
+                  <li class="insight-row insight-row--static">
+                    <span class="insight-row__title">{{ row.category }}</span>
+                    <span class="insight-row__meta">{{ row.count }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="body-copy body-copy--secondary">No code assists yet.</p>
+            {% endif %}
+          </div>
+
+          <div class="insight-panel">
+            <h3 class="subsection-title">Recent successful repairs</h3>
+            {% if teacher_summary.recent_repairs %}
+              <ul class="insight-list">
+                {% for row in teacher_summary.recent_repairs %}
+                  <li class="insight-row">
+                    <a href="{{ row.href }}" class="insight-row__link">
+                      <span class="insight-row__title">{{ row.title }}</span>
+                      <span class="insight-row__cue" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="body-copy body-copy--secondary">No passing repairs yet.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="button-row section-space">
+          <a class="button-link button-link--secondary" href="{{ teacher_summary.export_href }}">Export class report</a>
+        </div>
+      {% endcall %}
+    {% endif %}
+
+    {% call ui.section_block(
+      "Recent learning activity",
+      None,
+      classes="section-block--surface workspace-panel workspace-panel--activity"
+    ) %}
+      {% if recent_question_rows or recent_code_rows %}
+        <div class="insight-grid">
+          {% if recent_question_rows %}
+            <div class="insight-panel">
+              <h3 class="subsection-title">Grounded answers</h3>
+              <ul class="insight-list">
+                {% for row in recent_question_rows %}
+                  <li class="insight-row">
+                    <a href="{{ row.href }}" class="insight-row__link">
+                      <span class="insight-row__title">{{ row.title }}</span>
+                      <span class="insight-row__meta">{{ row.actor_label if current_role.sees_all_sessions else row.role_label }}</span>
+                      <span class="insight-row__cue" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {% if recent_code_rows %}
+            <div class="insight-panel">
+              <h3 class="subsection-title">Code assists</h3>
+              <ul class="insight-list">
+                {% for row in recent_code_rows %}
+                  <li class="insight-row">
+                    <a href="{{ row.href }}" class="insight-row__link">
+                      <span class="insight-row__title">{{ row.title }}</span>
+                      <span class="insight-row__meta">{{ row.actor_label if current_role.sees_all_sessions else row.role_label }}</span>
+                      <span class="insight-row__cue" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        {{ ui.empty_state(
+          "No saved work yet.",
+          "Ask a question or run the Python helper."
+        ) }}
+      {% endif %}
+    {% endcall %}
+  </div>
+{% endblock %}

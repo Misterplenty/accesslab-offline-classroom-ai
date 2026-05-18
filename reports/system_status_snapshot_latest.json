@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-05-18T20:51:46.315554+00:00",
+  "app_name": "AccessLab",
+  "deployment": {
+    "profile": "strong",
+    "profile_display": "Strong",
+    "mode": "school-box-shared",
+    "mode_display": "School AI box",
+    "mode_summary": "one stronger LAN machine serving many classroom browsers",
+    "class_space": "judge-demo-class",
+    "class_space_display": "judge demo class",
+    "training_capture_enabled": "on",
+    "training_capture_display": "Opt-in local capture on"
+  },
+  "runtime": {
+    "backend": "ollama",
+    "backend_display": "Ollama local runtime",
+    "active_model": "gemma4:e4b",
+    "generation_model_family": "Gemma 4",
+    "runtime_description": "Ollama local runtime (gemma4:e4b)",
+    "capabilities": {
+      "backend_name": "ollama",
+      "runtime_label": "Ollama local runtime",
+      "validation_stage": "current",
+      "supports_streaming": true,
+      "token_timings_available": true,
+      "model_listing_available": true,
+      "health_probe_shape": "GET /api/tags plus model-present check",
+      "semantic_dependency_shape": "EmbeddingGemma uses the same Ollama host via /api/embed.",
+      "supports_generation": true,
+      "validation_only": false,
+      "supports_health_probe": true,
+      "supported_profiles": [
+        "grounded-qa",
+        "beginner-python-repair",
+        "accessibility-smoke"
+      ],
+      "supports_model_listing": true,
+      "supports_token_timings": true
+    }
+  },
+  "retrieval": {
+    "requested_mode": "hybrid",
+    "requested_mode_display": "Hybrid",
+    "effective_mode": "hybrid",
+    "effective_mode_display": "Hybrid",
+    "semantic_status_code": "ok",
+    "semantic_status_label": "Ready",
+    "semantic_summary": "EmbeddingGemma is ready and the shared embedding index is usable.",
+    "semantic_detail": "Ready with `embeddinggemma`.",
+    "semantic_index_status": "indexed",
+    "semantic_index_label": "Indexed",
+    "semantic_backfilled_chunks": 0,
+    "semantic_counts": {
+      "documents": 5,
+      "chunks": 5,
+      "embedded_chunks": 5,
+      "missing_chunks": 0
+    }
+  },
+  "queue": {
+    "max_concurrent_jobs": 1,
+    "active_jobs": 0,
+    "waiting_jobs": 0,
+    "queue_depth": 0,
+    "active_budget": 0,
+    "available_budget": 1,
+    "last_started_at": "",
+    "last_completed_at": "",
+    "last_failed_at": "",
+    "last_job_kind": "",
+    "last_wait_seconds": 0.0,
+    "average_wait_seconds": 0.0,
+    "completed_jobs": 0,
+    "failed_jobs": 0,
+    "active_by_kind": {},
+    "waiting_by_kind": {},
+    "recent_jobs": [],
+    "active_job_receipts": []
+  },
+  "preflight": {
+    "overall_status": "ready",
+    "overall_label": "Ready",
+    "checks": [
+      {
+        "id": "generation-runtime",
+        "label": "Gemma 4 runtime",
+        "status": "pass",
+        "summary": "Ready with `gemma4:e4b`.",
+        "detail": "Ollama local runtime (gemma4:e4b)",
+        "critical": true
+      },
+      {
+        "id": "embedding-model",
+        "label": "EmbeddingGemma model",
+        "status": "pass",
+        "summary": "EmbeddingGemma is ready and the shared embedding index is usable.",
+        "detail": "Ready with `embeddinggemma`.",
+        "critical": false
+      },
+      {
+        "id": "semantic-retrieval",
+        "label": "Semantic retrieval",
+        "status": "pass",
+        "summary": "Hybrid active.",
+        "detail": "Ready with `embeddinggemma`.",
+        "critical": false
+      },
+      {
+        "id": "ocr",
+        "label": "OCR fallback",
+        "status": "pass",
+        "summary": "OCR extras are available locally.",
+        "detail": "rapidocr (ready, dpi=200)",
+        "critical": false
+      },
+      {
+        "id": "storage",
+        "label": "Writable local storage",
+        "status": "pass",
+        "summary": "Storage is writable in <workspace>/data/judge-demo.",
+        "detail": "<workspace>/data/judge-demo/accesslab-preflight-p8e8dvgp.tmp",
+        "critical": true
+      },
+      {
+        "id": "database",
+        "label": "Database state",
+        "status": "pass",
+        "summary": "SQLite quick_check passed for <workspace>/data/judge-demo/accesslab.db.",
+        "detail": "5 document(s), 2 QA session(s), 1 code session(s), 2 label(s), and 0 captured example(s) in judge demo class.",
+        "critical": true
+      },
+      {
+        "id": "deployment",
+        "label": "Deployment mode",
+        "status": "info",
+        "summary": "School AI box",
+        "detail": "one stronger LAN machine serving many classroom browsers",
+        "critical": false
+      },
+      {
+        "id": "class-space",
+        "label": "Class space",
+        "status": "info",
+        "summary": "judge demo class",
+        "detail": "Shared material and saved-session scope for this deployment.",
+        "critical": false
+      },
+      {
+        "id": "queue",
+        "label": "Concurrent job limit",
+        "status": "info",
+        "summary": "1 capacity slot(s)",
+        "detail": "Queue depth 0 with 0 active, 0 waiting, and 1 slot(s) currently free.",
+        "critical": false
+      },
+      {
+        "id": "training-capture",
+        "label": "Training-data capture",
+        "status": "info",
+        "summary": "Opt-in local capture on",
+        "detail": "Structured QA/code examples are being captured locally for future tuning export.",
+        "critical": false
+      }
+    ],
+    "dataset_counts": {
+      "documents": 5,
+      "qa_sessions": 2,
+      "code_sessions": 1,
+      "session_labels": 2,
+      "training_capture_events": 0
+    },
+    "storage_probe_path": "<workspace>/data/judge-demo/accesslab-preflight-p8e8dvgp.tmp",
+    "database_quick_check": "ok"
+  }
+}

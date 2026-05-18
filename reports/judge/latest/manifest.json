@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-05-18T22:25:03.467520+00:00",
+  "commit_hash": "366e930a9a2046b1383f8d395ca54b515786e1dd",
+  "model_names": [
+    "gemma4:e4b",
+    "gemma4:e2b",
+    "embeddinggemma"
+  ],
+  "hardware": {
+    "platform": "macOS-15.7.4-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.14.4"
+  },
+  "pass_fail_summary": {
+    "included_artifacts": 18,
+    "missing_artifacts": 0,
+    "status": "pass"
+  },
+  "output_dir": "reports/judge/latest",
+  "artifacts": [
+    {
+      "name": "readme",
+      "source": "README.md",
+      "included": true,
+      "output": "reports/judge/latest/readme.md"
+    },
+    {
+      "name": "benchmark_summary",
+      "source": "reports/accesslab_benchmark_summary.md",
+      "included": true,
+      "output": "reports/judge/latest/benchmark_summary.md"
+    },
+    {
+      "name": "benchmark_bundle",
+      "source": "reports/accesslab_benchmark_bundle.json",
+      "included": true,
+      "output": "reports/judge/latest/benchmark_bundle.json"
+    },
+    {
+      "name": "accessibility_smoke",
+      "source": "reports/a11y_smoke_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/accessibility_smoke.md"
+    },
+    {
+      "name": "accessibility_smoke_json",
+      "source": "reports/a11y_smoke_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/accessibility_smoke_json.json"
+    },
+    {
+      "name": "operator_preflight",
+      "source": "reports/operator_preflight_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/operator_preflight.md"
+    },
+    {
+      "name": "system_snapshot",
+      "source": "reports/system_status_snapshot_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/system_snapshot.json"
+    },
+    {
+      "name": "deployment_snapshot",
+      "source": "reports/deployment_mode_snapshot_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/deployment_snapshot.md"
+    },
+    {
+      "name": "embeddinggemma_setup",
+      "source": "reports/embeddinggemma_setup_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/embeddinggemma_setup.md"
+    },
+    {
+      "name": "embeddinggemma_setup_json",
+      "source": "reports/embeddinggemma_setup_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/embeddinggemma_setup_json.json"
+    },
+    {
+      "name": "semantic_retrieval_proof",
+      "source": "reports/semantic_retrieval_proof_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/semantic_retrieval_proof.md"
+    },
+    {
+      "name": "semantic_retrieval_proof_json",
+      "source": "reports/semantic_retrieval_proof_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/semantic_retrieval_proof_json.json"
+    },
+    {
+      "name": "school_box_load",
+      "source": "reports/school_box_load_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/school_box_load.md"
+    },
+    {
+      "name": "school_box_load_json",
+      "source": "reports/school_box_load_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/school_box_load_json.json"
+    },
+    {
+      "name": "school_box_demo_proof",
+      "source": "reports/school_box_demo_proof_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/school_box_demo_proof.md"
+    },
+    {
+      "name": "school_box_demo_proof_json",
+      "source": "reports/school_box_demo_proof_latest.json",
+      "included": true,
+      "output": "reports/judge/latest/school_box_demo_proof_json.json"
+    },
+    {
+      "name": "semantic_retrieval",
+      "source": "docs/semantic_retrieval.md",
+      "included": true,
+      "output": "reports/judge/latest/semantic_retrieval.md"
+    },
+    {
+      "name": "demo_runbook",
+      "source": "reports/demo_runbook_latest.md",
+      "included": true,
+      "output": "reports/judge/latest/demo_runbook.md"
+    }
+  ]
+}

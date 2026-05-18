@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}Fix Python Code — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {{ ui.page_header(
+    title="Code Assist",
+    summary=None
+  ) }}
+{% endblock %}
+
+{% block content %}
+  <div class="page-layout page-layout--single page-layout--code">
+    {% if code_result %}
+      {% call ui.section_block(
+        None,
+        None,
+        classes="section-block--surface",
+        heading_id="code-result-heading"
+      ) %}
+        <div class="button-row">
+          <a class="button-link button-link--secondary" href="/code">Run another review</a>
+        </div>
+        <div class="toolbar" role="toolbar" aria-label="Code Assist tools">
+          <button
+            class="btn-secondary"
+            type="button"
+            data-read-aloud-target="code-explanation-text"
+            data-read-aloud-status="code-read-aloud-status"
+          >
+            Read explanation aloud
+          </button>
+          <button
+            class="btn-secondary"
+            type="button"
+            data-disclosure-target="code-evidence"
+            data-label-show="Show runtime evidence"
+            data-label-hide="Hide runtime evidence"
+            aria-controls="code-evidence"
+          >
+            Show runtime evidence
+          </button>
+        </div>
+        <p id="code-read-aloud-status" class="field-note read-aloud-status" role="status" aria-live="polite"></p>
+
+        {% if code_notice %}
+          {{ ui.notice(code_notice.title, code_notice.body, code_notice.tone) }}
+        {% endif %}
+
+        <div id="code-evidence" class="disclosure-panel section-space">
+          <dl class="status-list status-list--compact">
+            {{ ui.status_row("Initial run", code_initial_status_label) }}
+            {{ ui.status_row("Patched run", code_patched_run_view.status_label) }}
+            {{ ui.status_row("Sandbox", code_result.initial_run.sandbox_profile or sandbox_profile_display, code_result.initial_run.sandbox_note or sandbox_note) }}
+          </dl>
+          {% if code_result.evidence %}
+            <p class="body-copy">{{ code_result.evidence }}</p>
+          {% endif %}
+        </div>
+
+        <div id="code-explanation-text" class="code-result-stack">
+          <div class="code-step" data-step="1">
+            
+              <h3>What failed</h3>
+            
+            <p class="body-copy">{{ code_result.diagnosis }}</p>
+            <p class="field-note">
+              Initial run: {{ code_initial_status_label }}
+              {% if code_result.initial_run.used_generated_tests %} · used generated smoke test{% endif %}
+            </p>
+            {% if code_result.initial_run.combined_output %}
+              <pre class="code-block code-block--output"><code>{{ code_result.initial_run.combined_output }}</code></pre>
+            {% endif %}
+            <details class="details-card details-card--nested">
+              <summary>Original code</summary>
+              <pre class="code-block code-block--original"><code>{{ code_value }}</code></pre>
+            </details>
+          </div>
+
+          <div class="code-step" data-step="2">
+            
+              <h3>Smallest fix</h3>
+            
+            <p class="body-copy">{{ code_result.next_fix }}</p>
+          </div>
+
+          <div class="code-step" data-step="3">
+            
+              <h3>Patched code</h3>
+            
+            <pre class="code-block code-block--patched"><code>{{ code_result.patched_code }}</code></pre>
+          </div>
+
+          <div class="code-step" data-step="4">
+            
+              <h3>Why it helps</h3>
+            
+            <p class="body-copy">{{ code_result.why_it_works }}</p>
+          </div>
+
+          <div class="code-step code-step--success" data-step="5">
+            
+              <h3>Checked again</h3>
+            
+            <p class="result-verdict result-verdict--{{ code_patched_run_view.tone }}">
+              {{ code_patched_run_view.verdict }}
+            </p>
+            <p class="field-note">Status: {{ code_patched_run_view.status_label }}</p>
+            {% if code_patched_run_view.summary and code_patched_run_view.summary != "No output produced." %}
+              <pre class="code-block code-block--output"><code>{{ code_patched_run_view.summary }}</code></pre>
+            {% else %}
+              <p class="body-copy body-copy--secondary">No output produced.</p>
+            {% endif %}
+          </div>
+        </div>
+        <details class="details-card details-card--nested read-aloud-transcript">
+          <summary>Read-aloud transcript</summary>
+          <p class="body-copy">{{ code_result.diagnosis }}</p>
+          <p class="body-copy">{{ code_result.next_fix }}</p>
+          <p class="body-copy">{{ code_result.why_it_works }}</p>
+          <p class="body-copy">{{ code_patched_run_view.verdict }}</p>
+        </details>
+      {% endcall %}
+    {% else %}
+      {% call ui.section_block(
+        None,
+        None,
+        classes="section-block--surface"
+      ) %}
+        <form
+          action="/code"
+          method="post"
+          data-status="Running Python code with Gemma 4."
+          data-pending-title="Running code"
+          data-pending-detail="Testing locally, preparing the repair, and checking the patched code."
+          data-submit-label="Running..."
+          data-status-steps="Code received|Running Python tests|Gemma 4 preparing explanation|Rerunning patched code"
+          aria-label="Submit Python code for bug analysis"
+          class="form-stack"
+        >
+          <input type="hidden" name="inclusive_plain_language" value="0" data-a11y-plain-input />
+          <label for="code" class="field-label">Python code</label>
+          <textarea
+            id="code"
+            name="code"
+            rows="8"
+            required
+            spellcheck="false"
+            autocomplete="off"
+          >{{ code_value }}</textarea>
+
+          <details class="details-card details-card--nested">
+            <summary>Optional tests and instructions</summary>
+            <label for="tests" class="field-label">Tests or expected output (optional)</label>
+            <textarea
+              id="tests"
+              name="tests"
+              rows="4"
+              spellcheck="false"
+              autocomplete="off"
+            >{{ test_value }}</textarea>
+
+            <label for="instruction" class="field-label">Explanation style (optional)</label>
+            <textarea
+              id="instruction"
+              name="instruction"
+              rows="2"
+            >{{ instruction_value }}</textarea>
+          </details>
+
+          <div class="button-row">
+            <button type="submit">Run code tutor</button>
+          </div>
+        </form>
+
+      {% endcall %}
+    {% endif %}
+
+    {% if code_result and code_result.session_id and can_label_saved_sessions %}
+      <details class="details-card">
+        <summary>Teacher review labels</summary>
+        {% if code_session_labels %}
+          <ul class="clean-list">
+            {% for row in code_session_labels %}
+              <li>{{ row.label_display }}{% if row.note %}: {{ row.note }}{% endif %} · {{ row.actor_role }} · {{ row.created_at }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="body-copy body-copy--secondary">No local review labels yet.</p>
+        {% endif %}
+
+        <form action="/session-labels" method="post" class="form-stack form-stack--compact">
+          <input type="hidden" name="source_type" value="code" />
+          <input type="hidden" name="source_id" value="{{ code_result.session_id }}" />
+          <input type="hidden" name="redirect_to" value="/code?session_id={{ code_result.session_id }}" />
+          <label for="code-label" class="field-label">Add label</label>
+          <select id="code-label" name="label">
+            {% for option in quality_label_options %}
+              <option value="{{ option.value }}">{{ option.label }}</option>
+            {% endfor %}
+          </select>
+          <label for="code-label-note" class="field-label">Short note (optional)</label>
+          <textarea id="code-label-note" name="note" rows="2"></textarea>
+          <div class="button-row">
+            <button type="submit" class="btn-secondary">Save local label</button>
+          </div>
+        </form>
+      </details>
+    {% endif %}
+  </div>
+{% endblock %}

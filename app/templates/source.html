@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}Inspect Source — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {% if source_view %}
+    {% call ui.page_header(
+      source_view.file_name,
+      None
+    ) %}
+      <div class="page-header__meta-row">
+        {{ ui.meta_item("Type", source_view.file_type_label) }}
+        {{ ui.meta_item("Location", source_view.page_label or "Whole file") }}
+        {{ ui.meta_item("Evidence ref", source_view.chunk_id, tone="accent", mono=True) }}
+      </div>
+    {% endcall %}
+  {% else %}
+    {% call ui.page_header(
+      "Source reference not found",
+      None
+    ) %}
+      <div class="page-header__meta-row">
+        {{ ui.meta_item("State", "Missing chunk", tone="warn") }}
+      </div>
+    {% endcall %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if source_view %}
+    <div class="page-layout page-layout--single page-layout--source">
+      {% call ui.section_block(
+        "Cited excerpt",
+        None,
+        classes="section-block--surface"
+      ) %}
+        <blockquote class="source-snippet" id="cited-snippet" tabindex="-1">{{ source_view.cited_snippet }}</blockquote>
+
+        <div class="source-actions">
+          {% if source_view.raw_file_href %}
+            <a
+              class="button-link"
+              href="{{ source_view.raw_file_href }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open original source file for {{ source_view.file_name }}"
+            >
+              {{ source_view.raw_file_label }}
+            </a>
+          {% endif %}
+          <button
+            class="btn-secondary"
+            type="button"
+            data-read-aloud-target="cited-snippet"
+            data-read-aloud-status="source-read-aloud-status"
+          >
+            Read excerpt aloud
+          </button>
+          <a class="button-link button-link--secondary" href="{{ qa_return_href or '/qa' }}">Back to Q&amp;A</a>
+        </div>
+        <p id="source-read-aloud-status" class="field-note read-aloud-status" role="status" aria-live="polite"></p>
+        <details class="details-card details-card--nested read-aloud-transcript">
+          <summary>Read-aloud transcript</summary>
+          <p class="body-copy">{{ source_view.cited_snippet }}</p>
+        </details>
+      {% endcall %}
+
+      {% if source_view.notice %}
+        {{ ui.notice("Source note", source_view.notice, "warn") }}
+      {% endif %}
+
+      {% if source_view.is_pdf %}
+        {% call ui.section_block(
+          "Page context",
+          None,
+          classes="section-block--surface"
+        ) %}
+          <ol class="source-page-list">
+            {% for chunk in source_view.page_chunks %}
+              <li class="source-page-chunk{% if chunk.is_cited %} source-page-chunk--cited{% endif %}">
+                <div class="source-page-chunk__meta">
+                  <code>{{ chunk.chunk_id }}</code>
+                  {% if chunk.is_cited %}
+                    <span class="source-page-chunk__badge">Cited evidence</span>
+                  {% endif %}
+                </div>
+                <p>{{ chunk.chunk_text }}</p>
+              </li>
+            {% endfor %}
+          </ol>
+        {% endcall %}
+      {% else %}
+        {% call ui.section_block(
+          "Source context",
+          None,
+          classes="section-block--surface"
+        ) %}
+          <div class="source-excerpt">{{ source_view.excerpt_html }}</div>
+        {% endcall %}
+      {% endif %}
+
+      <details class="details-card">
+        <summary>Source details</summary>
+        <dl class="status-list">
+          {{ ui.status_row("File", source_view.file_name) }}
+          {{ ui.status_row("Type", source_view.file_type_label) }}
+          {{ ui.status_row("Location", source_view.page_label or "Whole file") }}
+          {{ ui.status_row("Evidence ref", source_view.chunk_id, mono=True) }}
+          {{ ui.status_row("Storage", "Stored locally in this AccessLab workspace.") }}
+        </dl>
+      </details>
+    </div>
+  {% else %}
+    {% call ui.section_block(
+      "Source reference not found",
+      None,
+      classes="section-block--surface"
+    ) %}
+      {% if missing_chunk_id %}
+        <p class="body-copy"><strong>Missing evidence ref:</strong> <code>{{ missing_chunk_id }}</code></p>
+      {% endif %}
+      <div class="button-row">
+        <a class="button-link button-link--secondary" href="{{ qa_return_href or '/qa' }}">Return to Explain Materials</a>
+      </div>
+    {% endcall %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-18T10:14:10.882421+00:00",
+  "model": "embeddinggemma",
+  "setup_command": "ollama pull embeddinggemma",
+  "ollama_url": "http://127.0.0.1:11434",
+  "healthz_url": "http://127.0.0.1:8000/healthz",
+  "pull_attempted": true,
+  "pull_result": {
+    "command": [
+      "ollama",
+      "pull",
+      "embeddinggemma"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u280b \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u2819 \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u2839 \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u2838 \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u283c \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u2834 \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[1Gpulling manifest \u001b[K\npulling 0800cbac9c20: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f 621 MB                         \u001b[K\npulling 1adbfec9dcf0: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f 8.4 KB                         \u001b[K\npulling 45dc10444b87: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f   34 B                         \u001b[K\npulling 3901c6a1d7c2: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  416 B                         \u001b[K\nverifying sha256 digest \u001b[K\nwriting manifest \u280b \u001b[K\u001b[?25h\u001b[?2026l\u001b[?2026h\u001b[?25l\u001b[A\u001b[A\u001b[A\u001b[A\u001b[A\u001b[A\u001b[1Gpulling manifest \u001b[K\npulling 0800cbac9c20: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f 621 MB                         \u001b[K\npulling 1adbfec9dcf0: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f 8.4 KB                         \u001b[K\npulling 45dc10444b87: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f   34 B                         \u001b[K\npulling 3901c6a1d7c2: 100% \u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  416 B                         \u001b[K\nverifying sha256 digest \u001b[K\nwriting manifest \u001b[K\nsuccess \u001b[K\u001b[?25h\u001b[?2026l",
+    "ok": true
+  },
+  "ollama_tags_ok": true,
+  "ollama_tags_error": "",
+  "installed_model_names": [
+    "all-minilm:latest",
+    "embeddinggemma:latest",
+    "gemma4:e2b",
+    "gemma4:e4b"
+  ],
+  "model_present_in_active_store": true,
+  "healthz_ok": true,
+  "healthz_error": "",
+  "healthz_semantic_provider_ready": true,
+  "healthz_semantic_retrieval_ready": false,
+  "healthz_semantic_status_code": "indexing_unavailable",
+  "healthz_semantic_summary": "EmbeddingGemma is healthy, but the semantic index is not ready yet.",
+  "overall_status": "pass",
+  "remediation": [
+    "Run `ollama pull embeddinggemma`.",
+    "Run `ollama list` from the same account that runs AccessLab.",
+    "If the model exists in another store, restart Ollama with the correct OLLAMA_MODELS/HOME.",
+    "Restart AccessLab if it was already running.",
+    "Open `/healthz` and confirm semantic_provider_ready is true; semantic_retrieval_ready becomes true after materials are indexed."
+  ],
+  "honest_limits": [
+    "Model installation only proves the provider can be found in the active Ollama store.",
+    "Semantic retrieval also requires indexed class materials.",
+    "SQLite FTS5 remains the fallback when EmbeddingGemma is unavailable."
+  ]
+}

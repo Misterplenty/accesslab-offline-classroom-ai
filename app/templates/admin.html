@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% import "_ui.html" as ui %}
+{% block title %}System Proof — {{ app_name }}{% endblock %}
+
+{% block page_header %}
+  {{ ui.page_header(
+    title="System",
+    summary=None
+  ) }}
+{% endblock %}
+
+{% block content %}
+  <div class="page-layout page-layout--single page-layout--admin">
+    {% call ui.section_block(
+      "Status",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {{ ui.status_row("Overall", operator_preflight.overall_label, tone='success' if operator_preflight.overall_status == 'ready' else 'warn') }}
+        {{ ui.status_row("Model", local_status.title, tone=local_status.tone) }}
+        {{ ui.status_row("Search", retrieval_diagnostics.actual_mode_label, tone=retrieval_status.tone) }}
+        {{ ui.status_row("OCR", ocr_status.title, tone=ocr_status.tone) }}
+      </dl>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Queue",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <dl class="status-list">
+        {{ ui.status_row("Mode", deployment_mode_display, deployment_mode_summary) }}
+        {{ ui.status_row("Class", class_space_display) }}
+        {{ ui.status_row("Limit", queue_snapshot.max_concurrent_jobs, mono=True) }}
+        {{ ui.status_row("Active", queue_snapshot.active_jobs, mono=True) }}
+        {{ ui.status_row("Waiting", queue_snapshot.waiting_jobs, mono=True) }}
+        {{ ui.status_row("Depth", queue_snapshot.queue_depth, mono=True) }}
+      </dl>
+      <details class="details-card details-card--nested">
+        <summary>Queue history</summary>
+        <dl class="status-list">
+          {{ ui.status_row("Last started job", queue_snapshot.last_started_at or "Not recorded", queue_snapshot.last_job_kind or "No job has started yet.", mono=True) }}
+          {{ ui.status_row("Last completed job", queue_snapshot.last_completed_at or "Not recorded", "Most recent successful local job.", mono=True) }}
+          {{ ui.status_row("Last failed job", queue_snapshot.last_failed_at or "Not recorded", "Most recent failed local job.", mono=True) }}
+          {{ ui.status_row("Average queue wait", queue_snapshot.average_wait_seconds ~ "s", "Average wait across completed and failed local jobs.", mono=True) }}
+          {{ ui.status_row("Completed jobs", queue_snapshot.completed_jobs, "Successful work observed since this process started.", mono=True) }}
+          {{ ui.status_row("Failed jobs", queue_snapshot.failed_jobs, "Failed work observed since this process started.", mono=True) }}
+        </dl>
+        {% if queue_recent_rows %}
+          <ul class="clean-list sample-list">
+            {% for row in queue_recent_rows %}
+              <li>{{ row.finished_at }} · {{ row.job_kind }} · {{ row.outcome }} · wait {{ row.wait_seconds }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </details>
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Class-space reassignment",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <form action="/admin/class-space-migration" method="post" class="form-stack form-stack--compact">
+        <label for="migration-from" class="field-label">From class space</label>
+        <input id="migration-from" name="from_class_space" type="text" value="{{ class_space_migration_form.from_class_space }}" />
+
+        <label for="migration-to" class="field-label">To class space</label>
+        <input id="migration-to" name="to_class_space" type="text" value="{{ class_space_migration_form.to_class_space }}" />
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="include_sessions" value="1"{% if class_space_migration_form.include_sessions %} checked{% endif %} />
+          Also move saved QA/code sessions, labels, and opt-in capture records
+        </label>
+
+        <div class="button-row">
+          <button type="submit" name="action" value="preview">Preview dry run</button>
+          <button type="submit" name="action" value="apply" class="btn-secondary">Apply reassignment</button>
+        </div>
+      </form>
+
+      {% if class_space_migration %}
+        <div class="section-space">
+          <dl class="status-list">
+            {{ ui.status_row("From", class_space_migration.from_class_space) }}
+            {{ ui.status_row("To", class_space_migration.to_class_space) }}
+            {{ ui.status_row("Sessions included", "Yes" if class_space_migration.include_sessions else "No", "Saved-session IDs stay the same; only class-space scope changes.") }}
+            {% for key, value in class_space_migration.counts.items() %}
+              {{ ui.status_row(key.replace('_', ' ')|title, value, mono=True) }}
+            {% endfor %}
+          </dl>
+          {% if class_space_migration.warnings %}
+            <details class="details-card details-card--nested">
+              <summary>Migration warnings</summary>
+              <ul class="clean-list">
+                {% for warning in class_space_migration.warnings %}
+                  <li>{{ warning }}</li>
+                {% endfor %}
+              </ul>
+            </details>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endcall %}
+
+    {% call ui.section_block(
+      "Reports",
+      None,
+      classes="section-block--surface"
+    ) %}
+      <div class="button-row">
+        <a class="button-link" href="/admin/proofs">Open proof dashboard</a>
+        <a class="button-link button-link--secondary" href="/judge-demo">Start judge demo</a>
+      </div>
+
+      <details class="details-card">
+        <summary>Judge-ready artifacts</summary>
+        <ul class="clean-list sample-list">
+          {% for row in artifact_snapshot_rows %}
+            <li><strong>{{ row.title }}:</strong> {{ row.status }} · <code>{{ row.path }}</code> · {{ row.detail }}</li>
+          {% endfor %}
+        </ul>
+      </details>
+
+      <details class="details-card">
+        <summary>Runtime capabilities</summary>
+        <dl class="status-list">
+          {{ ui.status_row("Backend", runtime_capabilities.runtime_label, runtime_capabilities.validation_stage, tone='success' if runtime_backend == 'ollama' else 'warn') }}
+          {{ ui.status_row("Generation", "Available" if runtime_capabilities.supports_generation else "Not available") }}
+          {{ ui.status_row("Streaming", "Supported" if runtime_capabilities.supports_streaming else "Not exposed", runtime_capabilities.health_probe_shape) }}
+          {{ ui.status_row("Health probe", "Supported" if runtime_capabilities.supports_health_probe else "Unavailable", runtime_capabilities.health_probe_shape) }}
+          {{ ui.status_row("Token timings", "Available" if runtime_capabilities.supports_token_timings else "Unavailable") }}
+          {{ ui.status_row("Model listing", "Available" if runtime_capabilities.supports_model_listing else "Unavailable") }}
+          {{ ui.status_row("Profiles", runtime_capabilities.supported_profiles | join(", ") if runtime_capabilities.supported_profiles else "Not declared") }}
+          {{ ui.status_row("Validation only", "Yes" if runtime_capabilities.validation_only else "No") }}
+          {{ ui.status_row("Semantic dependency", semantic_model_family, runtime_capabilities.semantic_dependency_shape) }}
+        </dl>
+      </details>
+
+      <details class="details-card">
+        <summary>Local review and export</summary>
+        {% if operator_training_snapshot %}
+          <dl class="status-list">
+            {{ ui.status_row("Capture mode", operator_training_snapshot.capture_enabled_display, operator_training_snapshot.capture_enabled_summary) }}
+            {{ ui.status_row("Captured examples", operator_training_snapshot.captured_examples, "Opt-in structured capture records in this class space.", mono=True) }}
+            {{ ui.status_row("Local labels", operator_training_snapshot.session_labels, "Quality labels attached to saved QA/code sessions.", mono=True) }}
+          </dl>
+          {% if operator_training_snapshot.recent_captures %}
+            <ul class="clean-list sample-list">
+              {% for row in operator_training_snapshot.recent_captures %}
+                <li>{{ row.created_at }} · {{ row.capture_kind }} · {{ row.source_type }} #{{ row.source_id }} · {{ row.actor_role }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endif %}
+      </details>
+
+      <details class="details-card">
+        <summary>Operator tools and limits</summary>
+        <ul class="clean-list sample-list">
+          <li><code>python scripts/run_operator_preflight.py</code></li>
+          <li><code>python scripts/manage_class_space.py --from &lt;old&gt; --to &lt;new&gt;</code></li>
+          <li><code>python scripts/export_local_data.py --output reports/training_export.jsonl</code></li>
+        </ul>
+      </details>
+    {% endcall %}
+  </div>
+{% endblock %}
